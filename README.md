@@ -58,9 +58,10 @@ This feature-oriented structure makes it easy to locate and work on specific par
 The application uses **React Query** for efficient data fetching, caching, and state synchronization with the server. This is evident in the use of `useQuery` and `useMutation` hooks throughout the codebase.
 
 To further clarify the separation between client-side and server-side code, API-related files are organized within an `api` directory inside each module:
--   **`api/client.ts`**: Contains functions for making client-side API requests. These are typically used within React components and hooks.
--   **`api/server.ts`**: Contains server-side API logic, such as Next.js API route handlers.
--   **`api/types.ts`**: Contains TypeScript type definitions specific to the API. Co-locating types with the API files that use them enhances encapsulation and makes the module's data contracts clear.
+
+- **`api/client.ts`**: Contains functions for making client-side API requests. These are typically used within React components and hooks.
+- **`api/server.ts`**: Contains server-side API logic, such as Next.js API route handlers.
+- **`api/types.ts`**: Contains TypeScript type definitions specific to the API. Co-locating types with the API files that use them enhances encapsulation and makes the module's data contracts clear.
 
 This structure ensures a clean and explicit separation of concerns, simplifying API management and improving code readability.
 

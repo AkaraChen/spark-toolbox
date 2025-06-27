@@ -12,6 +12,9 @@ patchedDependencies:
 importers:
     .:
         dependencies:
+            '@akrc/std':
+                specifier: ^1.0.2
+                version: 1.0.2
             '@emotion/react':
                 specifier: ^11
                 version: 11.14.0(@types/react@18.3.23)(react@19.1.0)
@@ -102,6 +105,12 @@ importers:
                 version: 5.8.3
 
 packages:
+    '@akrc/std@1.0.2':
+        resolution:
+            {
+                integrity: sha512-TiYxZ1Qbmh5i9fozFS8u0VkU5b/k2mstNMlMlNnAuBRB/djI34Wy06pVz9JrcafqvObb7k/XRXCL1o9tHa+p5Q==,
+            }
+
     '@babel/code-frame@7.27.1':
         resolution:
             {
@@ -4123,6 +4132,8 @@ packages:
                 optional: true
 
 snapshots:
+    '@akrc/std@1.0.2': {}
+
     '@babel/code-frame@7.27.1':
         dependencies:
             '@babel/helper-validator-identifier': 7.27.1
