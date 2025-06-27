@@ -33,6 +33,13 @@ export interface AppState {
     smallModel: string
     setSmallModel: (model: string) => void
 
+    // Language preferences
+    primaryLanguage: string
+    setPrimaryLanguage: (language: string) => void
+
+    targetLanguage: string
+    setTargetLanguage: (language: string) => void
+
     // Utility functions
     getModelByType: (type: 'large' | 'base' | 'small') => string
 
@@ -51,6 +58,8 @@ export const useStore = create<AppState>()(
                 largeModel: OPENAI.MODELS.LARGE,
                 baseModel: OPENAI.MODELS.BASE,
                 smallModel: OPENAI.MODELS.SMALL,
+                primaryLanguage: 'English',
+                targetLanguage: 'Chinese',
 
                 // Actions
                 setOpenaiBase: (url: string) =>
@@ -78,6 +87,16 @@ export const useStore = create<AppState>()(
                         smallModel: model,
                     }),
 
+                setPrimaryLanguage: (language: string) =>
+                    set({
+                        primaryLanguage: language,
+                    }),
+
+                setTargetLanguage: (language: string) =>
+                    set({
+                        targetLanguage: language,
+                    }),
+
                 resetSettings: () =>
                     set({
                         openaiBase: OPENAI.DEFAULT_BASE_URL,
@@ -85,6 +104,8 @@ export const useStore = create<AppState>()(
                         largeModel: OPENAI.MODELS.LARGE,
                         baseModel: OPENAI.MODELS.BASE,
                         smallModel: OPENAI.MODELS.SMALL,
+                        primaryLanguage: 'English',
+                        targetLanguage: 'Chinese',
                     }),
 
                 // Selector function inside the store
