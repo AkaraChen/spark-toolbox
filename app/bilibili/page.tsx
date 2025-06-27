@@ -17,15 +17,26 @@ export default function BilibiliPage() {
 
     return (
         <PageContainer>
-            <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3 }}>
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: { xs: 'column', md: 'row' },
+                    gap: 3,
+                }}
+            >
                 {/* 左侧控制面板 */}
                 <Box sx={{ width: { xs: '100%', md: '33.33%' } }}>
-                    <BilibiliControlPanel onVideoDataFetched={handleVideoDataFetched} />
+                    <BilibiliControlPanel
+                        onVideoDataFetched={handleVideoDataFetched}
+                    />
                 </Box>
 
                 {/* 右侧视频播放器 */}
                 <Box sx={{ width: { xs: '100%', md: '66.67%' } }}>
-                    <BilibiliVideoPlayer videoData={videoData} mimeType={mimeType} />
+                    <BilibiliVideoPlayer
+                        videoData={videoData}
+                        mimeType={mimeType}
+                    />
                 </Box>
             </Box>
         </PageContainer>

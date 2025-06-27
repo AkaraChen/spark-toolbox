@@ -10,7 +10,7 @@ import { OpenAI } from 'openai'
 export async function text(
     client: OpenAI,
     model: string,
-    prompt: string
+    prompt: string,
 ): Promise<string> {
     try {
         const response = await client.chat.completions.create({

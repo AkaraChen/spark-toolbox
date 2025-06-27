@@ -1,6 +1,12 @@
 'use client'
 
-import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material'
+import {
+    FormControl,
+    InputLabel,
+    MenuItem,
+    Select,
+    SelectChangeEvent,
+} from '@mui/material'
 import { auto, langs } from '../utils/lang'
 
 interface LanguageSelectorProps {
@@ -16,24 +22,28 @@ export function LanguageSelector({
     onChange,
     disabled = false,
     label = '目标语言',
-    sx = {}
+    sx = {},
 }: LanguageSelectorProps) {
     const handleChange = (event: SelectChangeEvent) => {
         onChange(event.target.value)
     }
 
     return (
-        <FormControl sx={{ minWidth: 120, ...sx }} size="small" disabled={disabled}>
-            <InputLabel id="language-select-label">{label}</InputLabel>
+        <FormControl
+            sx={{ minWidth: 120, ...sx }}
+            size='small'
+            disabled={disabled}
+        >
+            <InputLabel id='language-select-label'>{label}</InputLabel>
             <Select
-                labelId="language-select-label"
-                id="language-select"
+                labelId='language-select-label'
+                id='language-select'
                 value={value}
                 label={label}
                 onChange={handleChange}
             >
-                <MenuItem value="auto">自动</MenuItem>
-                {langs.map((lang) => (
+                <MenuItem value='auto'>自动</MenuItem>
+                {langs.map(lang => (
                     <MenuItem key={lang} value={lang}>
                         {lang}
                     </MenuItem>

@@ -38,14 +38,15 @@ export function AuthorizationSettings() {
     return (
         <Stack spacing={3} sx={{ py: 3 }}>
             <Box>
-                <Typography variant="h6" gutterBottom>
+                <Typography variant='h6' gutterBottom>
                     GitHub 授权
                 </Typography>
-                <Typography variant="body2" color="text.secondary" paragraph>
-                    添加 GitHub 令牌可以提高 Changelog 查询的速率限制，并允许访问私有仓库。
-                    <Link 
-                        href="https://github.com/settings/tokens" 
-                        target="_blank" 
+                <Typography variant='body2' color='text.secondary' paragraph>
+                    添加 GitHub 令牌可以提高 Changelog
+                    查询的速率限制，并允许访问私有仓库。
+                    <Link
+                        href='https://github.com/settings/tokens'
+                        target='_blank'
                         sx={{ ml: 1 }}
                     >
                         创建令牌

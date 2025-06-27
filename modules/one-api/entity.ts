@@ -61,8 +61,7 @@ export const oneApiProviderEntity: Entity<OneApiProvider> = {
             },
         ],
         ...crud,
-        validate: z
-        .object({
+        validate: z.object({
             name: z.string().min(1, 'Name is required'),
             apiKey: z.string().min(1, 'API Key is required'),
             apiBase: z
@@ -71,8 +70,7 @@ export const oneApiProviderEntity: Entity<OneApiProvider> = {
                 .min(1, 'API Base URL is required'),
             userId: z.number().int().optional(),
             unit: z.enum(['USD', 'RMB']),
-        })
-        ['~standard'].validate,
+        })['~standard'].validate,
     },
     cache: new DataSourceCache(),
 }

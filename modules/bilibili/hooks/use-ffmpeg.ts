@@ -12,30 +12,36 @@ export function useFFmpeg() {
     const messageRef = useRef<string>('')
 
     // 使用 useQuery 处理 FFmpeg 的加载
-    const { 
+    const {
         data: ffmpeg,
         isLoading,
         isError,
-        error
+        error,
     } = useQuery({
         queryKey: ['ffmpeg-load'],
         queryFn: async () => {
             try {
                 const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd'
                 const ffmpeg = ffmpegRef.current
-                
+
                 // 设置日志监听
                 ffmpeg.on('log', ({ message }) => {
                     messageRef.current = message
                     console.log(message)
                 })
-                
+
                 // 加载 FFmpeg 核心文件
                 await ffmpeg.load({
-                    coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
-                    wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
+                    coreURL: await toBlobURL(
+                        `${baseURL}/ffmpeg-core.js`,
+                        'text/javascript',
+                    ),
+                    wasmURL: await toBlobURL(
+                        `${baseURL}/ffmpeg-core.wasm`,
+                        'application/wasm',
+                    ),
                 })
-                
+
                 return ffmpeg
             } catch (err) {
                 console.error('Failed to load FFmpeg:', err)
@@ -51,6 +57,6 @@ export function useFFmpeg() {
         isLoading,
         isError,
         error,
-        message: messageRef.current
+        message: messageRef.current,
     }
 }

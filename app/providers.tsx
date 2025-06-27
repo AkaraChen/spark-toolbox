@@ -9,9 +9,7 @@ const queryClient = new QueryClient()
 export default function Providers({ children }: PropsWithChildren) {
     return (
         <QueryClientProvider client={queryClient}>
-            <NotificationProvider>
-                {children}
-            </NotificationProvider>
+            <NotificationProvider>{children}</NotificationProvider>
         </QueryClientProvider>
     )
 }

@@ -5,10 +5,12 @@
 export interface PackageInfo {
     name: string
     homepage?: string
-    repository?: string | {
-        url: string
-        type?: string
-    }
+    repository?:
+        | string
+        | {
+              url: string
+              type?: string
+          }
 }
 
 export interface GitInfo {

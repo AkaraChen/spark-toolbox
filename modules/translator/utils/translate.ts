@@ -41,7 +41,7 @@ export async function detectLanguage(opts: TranslateParams): Promise<string> {
         if the language is in [${preferences.join(', ')}], just return the specified language name. 
         if not in the list, return the language name in English,
         if you are not sure, return unknown.
-        for example: ${userPreferences.primaryLanguage}`
+        for example: ${userPreferences.primaryLanguage}`,
     )
 }
 
@@ -57,7 +57,7 @@ async function translateToTargetLanguage(
     text: string,
     sourceLang: string,
     targetLang: string,
-    opts: TranslateParams
+    opts: TranslateParams,
 ): Promise<string> {
     const { client } = opts
     return await llm.text(
@@ -65,7 +65,7 @@ async function translateToTargetLanguage(
         opts.userPreferences.largeModel,
         `Translate the following ${sourceLang} text to ${targetLang}: ${text}, 
         only output the translated text, 
-        do not output any other text, for example: ${text}`
+        do not output any other text, for example: ${text}`,
     )
 }
 
@@ -82,7 +82,7 @@ async function translateToTargetLanguage(
 export async function translate(
     opts: TranslateParams,
     sourceLanguage: string,
-    targetLanguage?: string
+    targetLanguage?: string,
 ): Promise<string> {
     const { text, userPreferences } = opts
     if (targetLanguage) {
@@ -90,7 +90,7 @@ export async function translate(
             text,
             sourceLanguage,
             targetLanguage,
-            opts
+            opts,
         )
     }
     if (sourceLanguage === userPreferences.primaryLanguage) {
@@ -99,7 +99,7 @@ export async function translate(
             text,
             sourceLanguage,
             userPreferences.targetLanguage,
-            opts
+            opts,
         )
     }
     // is not mother language, try to translate to mother language
@@ -107,6 +107,6 @@ export async function translate(
         text,
         sourceLanguage,
         userPreferences.primaryLanguage,
-        opts
+        opts,
     )
 }

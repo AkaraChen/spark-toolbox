@@ -31,7 +31,7 @@ function createMethodClient(
         if (!res.ok) {
             throw new Error(`HTTP error status: ${res.status}`)
         }
-        return await res.json() as Promise<T>
+        return (await res.json()) as Promise<T>
     }
 }
 

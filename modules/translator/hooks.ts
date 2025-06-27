@@ -12,7 +12,7 @@ import { useOpenAI } from '@/modules/ai/hooks'
 export const useDetectLang = (sourceText: string) => {
     const store = useStore()
     const client = useOpenAI()
-    
+
     // Extract user preferences from store
     const userPreferences = {
         primaryLanguage: store.primaryLanguage || 'English',
@@ -20,7 +20,7 @@ export const useDetectLang = (sourceText: string) => {
         largeModel: store.largeModel,
         smallModel: store.smallModel,
     }
-    
+
     return useQuery({
         queryKey: ['detectLang', sourceText, userPreferences],
         queryFn: () =>
@@ -47,7 +47,7 @@ export const useTranslate = (
 ) => {
     const store = useStore()
     const client = useOpenAI()
-    
+
     // Extract user preferences from store
     const userPreferences = {
         primaryLanguage: store.primaryLanguage || 'English',
@@ -55,7 +55,7 @@ export const useTranslate = (
         largeModel: store.largeModel,
         smallModel: store.smallModel,
     }
-    
+
     return useQuery({
         queryKey: [
             'translate',
@@ -72,8 +72,11 @@ export const useTranslate = (
                     client,
                 },
                 detectLang as string,
-                targetLanguage === auto ? undefined : targetLanguage as string,
+                targetLanguage === auto
+                    ? undefined
+                    : (targetLanguage as string),
             ),
-        enabled: !!detectLang && !!sourceText && !!client && detectLang !== auto,
+        enabled:
+            !!detectLang && !!sourceText && !!client && detectLang !== auto,
     })
 }

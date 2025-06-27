@@ -24,9 +24,7 @@ export default function SettingsPage() {
     return (
         <PageContainer>
             <Box sx={{ width: '100%' }}>
-                <Box
-                    sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}
-                >
+                <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}>
                     <Tabs
                         value={tabValue}
                         onChange={handleTabChange}

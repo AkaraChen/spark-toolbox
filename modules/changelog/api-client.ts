@@ -9,7 +9,7 @@ import { createClient } from '@/modules/universal/utils/fetch'
  */
 export const getChangelogInfo = async (
     packageName: string,
-    githubToken?: string
+    githubToken?: string,
 ): Promise<ChangelogResult> => {
     const http = createClient(window.location.origin)
     return http.post(`/changelog/${packageName}`, {

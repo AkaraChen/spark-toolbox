@@ -1,14 +1,14 @@
 'use client'
 
 import { useState, ChangeEvent } from 'react'
-import { 
-    Box, 
-    Button, 
-    TextField, 
-    Stack, 
-    Typography, 
+import {
+    Box,
+    Button,
+    TextField,
+    Stack,
+    Typography,
     Chip,
-    IconButton
+    IconButton,
 } from '@mui/material'
 import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 import ContentPasteIcon from '@mui/icons-material/ContentPaste'
@@ -38,9 +38,9 @@ export function Translator() {
 
     // Translation
     const translate = useTranslate(
-        debouncedSourceText, 
-        detectLang.data || '', 
-        targetLanguage
+        debouncedSourceText,
+        detectLang.data || '',
+        targetLanguage,
     )
 
     // Copy translated text to clipboard
@@ -69,13 +69,13 @@ export function Translator() {
     // Get target language display
     const getTargetLanguageDisplay = () => {
         if (targetLanguage !== auto) return targetLanguage as string
-        
+
         if (debouncedSourceText && detectLang.data) {
             return detectLang.data === store.primaryLanguage
                 ? store.targetLanguage
                 : store.primaryLanguage
         }
-        
+
         return '自动'
     }
 
@@ -86,37 +86,43 @@ export function Translator() {
                 <Box sx={{ width: { xs: '100%', md: '50%' } }}>
                     <Stack spacing={2}>
                         <Box>
-                            <Typography variant="subtitle1" component="label" htmlFor="source">
+                            <Typography
+                                variant='subtitle1'
+                                component='label'
+                                htmlFor='source'
+                            >
                                 源文本
                                 {detectLang.data && (
-                                    <Chip 
-                                        label={detectLang.data} 
-                                        size="small" 
-                                        sx={{ ml: 1 }} 
+                                    <Chip
+                                        label={detectLang.data}
+                                        size='small'
+                                        sx={{ ml: 1 }}
                                     />
                                 )}
                                 {detectLang.isLoading && (
-                                    <Chip 
-                                        label="检测中..." 
-                                        size="small" 
-                                        sx={{ ml: 1, opacity: 0.7 }} 
+                                    <Chip
+                                        label='检测中...'
+                                        size='small'
+                                        sx={{ ml: 1, opacity: 0.7 }}
                                     />
                                 )}
                             </Typography>
                         </Box>
                         <TextField
-                            id="source"
+                            id='source'
                             multiline
                             rows={10}
-                            placeholder="输入要翻译的文本..."
+                            placeholder='输入要翻译的文本...'
                             fullWidth
                             value={sourceText}
                             onChange={handleSourceTextChange}
-                            sx={{ '& .MuiOutlinedInput-root': { height: '100%' } }}
+                            sx={{
+                                '& .MuiOutlinedInput-root': { height: '100%' },
+                            }}
                         />
-                        <Stack direction="row" spacing={2}>
+                        <Stack direction='row' spacing={2}>
                             <Button
-                                variant="contained"
+                                variant='contained'
                                 disabled={!translate.data}
                                 onClick={handleCopy}
                                 startIcon={<ContentCopyIcon />}
@@ -124,7 +130,7 @@ export function Translator() {
                                 复制
                             </Button>
                             <Button
-                                variant="outlined"
+                                variant='outlined'
                                 onClick={handlePaste}
                                 startIcon={<ContentPasteIcon />}
                             >
@@ -138,36 +144,48 @@ export function Translator() {
                 <Box sx={{ width: { xs: '100%', md: '50%' } }}>
                     <Stack spacing={2}>
                         <Box>
-                            <Typography variant="subtitle1" component="label" htmlFor="target">
+                            <Typography
+                                variant='subtitle1'
+                                component='label'
+                                htmlFor='target'
+                            >
                                 翻译文本
-                                {targetLanguage === auto && debouncedSourceText && detectLang.data && (
-                                    <Chip 
-                                        label={getTargetLanguageDisplay()} 
-                                        size="small" 
-                                        sx={{ ml: 1 }} 
-                                    />
-                                )}
+                                {targetLanguage === auto &&
+                                    debouncedSourceText &&
+                                    detectLang.data && (
+                                        <Chip
+                                            label={getTargetLanguageDisplay()}
+                                            size='small'
+                                            sx={{ ml: 1 }}
+                                        />
+                                    )}
                             </Typography>
                         </Box>
                         <TextField
-                            id="target"
+                            id='target'
                             multiline
                             rows={10}
                             placeholder={
                                 detectLang.isLoading
                                     ? '检测语言中...'
                                     : translate.isLoading
-                                    ? '翻译中...'
-                                    : '翻译结果将显示在这里...'
+                                      ? '翻译中...'
+                                      : '翻译结果将显示在这里...'
                             }
                             fullWidth
                             value={translate.data || ''}
                             InputProps={{ readOnly: true }}
-                            sx={{ '& .MuiOutlinedInput-root': { height: '100%' } }}
+                            sx={{
+                                '& .MuiOutlinedInput-root': { height: '100%' },
+                            }}
                         />
-                        <Stack direction="row" spacing={2} alignItems="center">
+                        <Stack direction='row' spacing={2} alignItems='center'>
                             <LanguageSelector
-                                value={targetLanguage === auto ? 'auto' : targetLanguage as string}
+                                value={
+                                    targetLanguage === auto
+                                        ? 'auto'
+                                        : (targetLanguage as string)
+                                }
                                 onChange={(value: string) => {
                                     if (value === 'auto') {
                                         setTargetLanguage(auto)
@@ -175,14 +193,24 @@ export function Translator() {
                                         setTargetLanguage(value)
                                     }
                                 }}
-                                disabled={detectLang.isLoading || translate.isLoading}
+                                disabled={
+                                    detectLang.isLoading || translate.isLoading
+                                }
                             />
                             <IconButton
                                 onClick={() => setTargetLanguage(auto)}
                                 disabled={targetLanguage === auto}
-                                aria-label={targetLanguage === auto ? "锁定翻译语言" : "自动选择翻译语言"}
+                                aria-label={
+                                    targetLanguage === auto
+                                        ? '锁定翻译语言'
+                                        : '自动选择翻译语言'
+                                }
                             >
-                                {targetLanguage !== auto ? <LockIcon /> : <LockOpenIcon />}
+                                {targetLanguage !== auto ? (
+                                    <LockIcon />
+                                ) : (
+                                    <LockOpenIcon />
+                                )}
                             </IconButton>
                         </Stack>
                     </Stack>

@@ -137,7 +137,7 @@ export const useStore = create<AppState>()(
                     }
                 },
             }),
-            { 
+            {
                 name: STORAGE.SETTING_STORE_NAME,
             },
         ),

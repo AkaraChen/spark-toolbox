@@ -6,7 +6,7 @@ export interface VideoInfo {
     owner: {
         name: string
         face: string
-    },
+    }
     pages: Array<{
         cid: number
         name: string

@@ -11,25 +11,28 @@ interface VideoPlayerProps {
 /**
  * Bilibili视频播放器组件
  */
-export function BilibiliVideoPlayer({ videoData, mimeType = 'video/mp4' }: VideoPlayerProps) {
+export function BilibiliVideoPlayer({
+    videoData,
+    mimeType = 'video/mp4',
+}: VideoPlayerProps) {
     const videoRef = useRef<HTMLVideoElement>(null)
-    
+
     // 使用useMemo创建Blob URL
     const videoUrl = useMemo(() => {
         if (!videoData) return null
-        
+
         // 创建Blob对象和URL
         const blob = new Blob([videoData], { type: mimeType })
         return URL.createObjectURL(blob)
     }, [videoData, mimeType])
-    
+
     // 当URL变化时设置视频源
     useEffect(() => {
         if (videoUrl && videoRef.current) {
             videoRef.current.src = videoUrl
         }
     }, [videoUrl])
-    
+
     // 清理URL资源
     useEffect(() => {
         return () => {
@@ -40,27 +43,27 @@ export function BilibiliVideoPlayer({ videoData, mimeType = 'video/mp4' }: Video
     }, [videoUrl])
 
     return (
-        <Paper 
-            sx={{ 
-                p: 3, 
-                height: '100%', 
-                display: 'flex', 
+        <Paper
+            sx={{
+                p: 3,
+                height: '100%',
+                display: 'flex',
                 flexDirection: 'column',
                 justifyContent: videoData ? 'flex-start' : 'center',
                 alignItems: videoData ? 'flex-start' : 'center',
-                minHeight: 500
+                minHeight: 500,
             }}
         >
             {videoData ? (
                 <Box sx={{ width: '100%', mt: 2 }}>
-                    <video 
+                    <video
                         ref={videoRef}
-                        controls 
+                        controls
                         style={{ width: '100%', maxHeight: '70vh' }}
                     />
                 </Box>
             ) : (
-                <Typography color="text.secondary">
+                <Typography color='text.secondary'>
                     请在左侧输入BV号并获取视频链接
                 </Typography>
             )}

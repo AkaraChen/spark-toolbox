@@ -11,7 +11,7 @@ import { useStore } from '@/modules/universal/store'
 export function useChangelogInfo() {
     const { showError } = useNotification()
     const { githubToken } = useStore()
-    
+
     return useMutation<ChangelogResult, Error, string>({
         mutationFn: (packageName: string) => {
             if (!packageName.trim()) {
@@ -20,8 +20,12 @@ export function useChangelogInfo() {
             }
             return getChangelogInfo(packageName, githubToken || undefined)
         },
-        onError: (error) => {
-            showError(error instanceof Error ? error.message : 'Failed to fetch changelog information')
-        }
+        onError: error => {
+            showError(
+                error instanceof Error
+                    ? error.message
+                    : 'Failed to fetch changelog information',
+            )
+        },
     })
 }

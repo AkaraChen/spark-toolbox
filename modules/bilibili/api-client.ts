@@ -21,7 +21,7 @@ export const getVideoInfo = async (bvid: string): Promise<VideoInfo> => {
  */
 export const getVideoSourceUrl = async (
     bvid: string,
-    cid: number
+    cid: number,
 ): Promise<VideoSource> => {
     const http = createClient(window.location.origin)
     const searchParams = new URLSearchParams()

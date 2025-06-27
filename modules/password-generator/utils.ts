@@ -2,16 +2,16 @@
  * Password generator flags
  */
 export interface PasswordFlags {
-  /** Password length */
-  length: number;
-  /** Include symbols */
-  symbol: boolean;
-  /** Include numbers */
-  number: boolean;
-  /** Include uppercase letters */
-  upperCase: boolean;
-  /** Include lowercase letters */
-  lowerCase: boolean;
+    /** Password length */
+    length: number
+    /** Include symbols */
+    symbol: boolean
+    /** Include numbers */
+    number: boolean
+    /** Include uppercase letters */
+    upperCase: boolean
+    /** Include lowercase letters */
+    lowerCase: boolean
 }
 
 /**
@@ -20,7 +20,7 @@ export interface PasswordFlags {
  * @returns Random item from the array
  */
 export function pick<T>(array: T[]): T {
-  return array[Math.floor(Math.random() * array.length)];
+    return array[Math.floor(Math.random() * array.length)]
 }
 
 /**
@@ -30,7 +30,7 @@ export function pick<T>(array: T[]): T {
  * @returns Random number
  */
 export function random(start: number, end: number): number {
-  return Math.floor(Math.random() * (end - start) + start);
+    return Math.floor(Math.random() * (end - start) + start)
 }
 
 /**
@@ -39,40 +39,40 @@ export function random(start: number, end: number): number {
  * @returns Generated password
  */
 export function generatePassword(flags: PasswordFlags): string {
-  const { symbol, number, upperCase, lowerCase } = flags;
-  const length = flags.length || 12;
-  let result = '';
-  
-  for (let i = 0; i < length; i++) {
-    let char = '';
-    
-    if (symbol) {
-      char += String.fromCharCode(random(33, 48));
+    const { symbol, number, upperCase, lowerCase } = flags
+    const length = flags.length || 12
+    let result = ''
+
+    for (let i = 0; i < length; i++) {
+        let char = ''
+
+        if (symbol) {
+            char += String.fromCharCode(random(33, 48))
+        }
+
+        if (number) {
+            char += String.fromCharCode(random(48, 58))
+        }
+
+        if (upperCase) {
+            char += String.fromCharCode(random(65, 91))
+        }
+
+        if (lowerCase) {
+            char += String.fromCharCode(random(97, 123))
+        }
+
+        // Default to random case letters if no character type is selected
+        if (!char) {
+            char += String.fromCharCode(
+                Math.random() < 0.5 ? random(65, 91) : random(97, 123),
+            )
+        }
+
+        result += pick(char.split(''))
     }
-    
-    if (number) {
-      char += String.fromCharCode(random(48, 58));
-    }
-    
-    if (upperCase) {
-      char += String.fromCharCode(random(65, 91));
-    }
-    
-    if (lowerCase) {
-      char += String.fromCharCode(random(97, 123));
-    }
-    
-    // Default to random case letters if no character type is selected
-    if (!char) {
-      char += String.fromCharCode(
-        Math.random() < 0.5 ? random(65, 91) : random(97, 123)
-      );
-    }
-    
-    result += pick(char.split(''));
-  }
-  
-  return result;
+
+    return result
 }
 
 /**
@@ -81,41 +81,41 @@ export function generatePassword(flags: PasswordFlags): string {
  * @returns Parsed password flags
  */
 export function parseArguments(arg: string): PasswordFlags {
-  const flags: PasswordFlags = {
-    length: 12,
-    symbol: false,
-    number: false,
-    upperCase: false,
-    lowerCase: false
-  };
-  
-  let lengthStr = '';
-  
-  for (const char of arg) {
-    switch (char) {
-      case 's':
-        flags.symbol = true;
-        break;
-      case 'n':
-        flags.number = true;
-        break;
-      case 'u':
-        flags.upperCase = true;
-        break;
-      case 'l':
-        flags.lowerCase = true;
-        break;
-      default:
-        // If it's a digit, add it to the length string
-        if (/\d/.test(char)) {
-          lengthStr += char;
+    const flags: PasswordFlags = {
+        length: 12,
+        symbol: false,
+        number: false,
+        upperCase: false,
+        lowerCase: false,
+    }
+
+    let lengthStr = ''
+
+    for (const char of arg) {
+        switch (char) {
+            case 's':
+                flags.symbol = true
+                break
+            case 'n':
+                flags.number = true
+                break
+            case 'u':
+                flags.upperCase = true
+                break
+            case 'l':
+                flags.lowerCase = true
+                break
+            default:
+                // If it's a digit, add it to the length string
+                if (/\d/.test(char)) {
+                    lengthStr += char
+                }
         }
     }
-  }
-  
-  if (lengthStr) {
-    flags.length = parseInt(lengthStr, 10);
-  }
-  
-  return flags;
+
+    if (lengthStr) {
+        flags.length = parseInt(lengthStr, 10)
+    }
+
+    return flags
 }

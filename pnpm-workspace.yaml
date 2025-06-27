@@ -1,2 +1,2 @@
 patchedDependencies:
-  '@renmu/bili-api': patches/@renmu__bili-api.patch
+    '@renmu/bili-api': patches/@renmu__bili-api.patch
