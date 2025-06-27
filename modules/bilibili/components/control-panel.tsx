@@ -7,6 +7,7 @@ import {
     CircularProgress, 
     FormControl, 
     InputLabel, 
+    LinearProgress, 
     MenuItem, 
     Paper, 
     Select, 
@@ -19,15 +20,17 @@ import { getVideoInfo, getVideoSourceUrl } from '../api-client'
 import { VideoInfo } from '../type'
 
 interface ControlPanelProps {
-    onVideoUrlFetched: (url: string) => void
+    onVideoDataFetched: (data: Uint8Array, mimeType: string) => void
 }
 
 /**
  * Bilibili视频控制面板组件
  */
-export function BilibiliControlPanel({ onVideoUrlFetched }: ControlPanelProps) {
+export function BilibiliControlPanel({ onVideoDataFetched }: ControlPanelProps) {
     const [bvid, setBvid] = useState('')
     const [selectedCid, setSelectedCid] = useState<number | null>(null)
+    const [downloadProgress, setDownloadProgress] = useState<number>(0)
+    const [isDownloading, setIsDownloading] = useState<boolean>(false)
 
     // 获取视频信息的查询
     const { 
@@ -41,25 +44,11 @@ export function BilibiliControlPanel({ onVideoUrlFetched }: ControlPanelProps) {
         enabled: false,
     })
 
-    // 获取视频URL的mutation
-    const { 
-        mutate: fetchVideoUrl, 
-        isPending: isLoadingUrl 
-    } = useMutation({
-        mutationFn: async ({ bvid, cid }: { bvid: string; cid: number }) => {
-            const sources = await getVideoSourceUrl(bvid, cid)
-            if (sources && sources.length > 0) {
-                onVideoUrlFetched(sources[0])
-                return sources[0]
-            }
-            throw new Error('No video source found')
-        },
-    })
-
     // 处理BV号输入变化
     const handleBvidChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setBvid(e.target.value)
         setSelectedCid(null)
+        setDownloadProgress(0)
     }
 
     // 处理获取视频信息按钮点击
@@ -71,12 +60,84 @@ export function BilibiliControlPanel({ onVideoUrlFetched }: ControlPanelProps) {
     // 处理分P选择变化
     const handleCidChange = (e: SelectChangeEvent<number>) => {
         setSelectedCid(e.target.value as number)
+        setDownloadProgress(0)
     }
 
-    // 处理获取视频URL按钮点击
-    const handleGetVideoUrl = () => {
+    // 处理获取视频按钮点击
+    const handleGetVideo = async () => {
         if (!bvid || !selectedCid) return
-        fetchVideoUrl({ bvid, cid: selectedCid })
+        
+        try {
+            setIsDownloading(true)
+            setDownloadProgress(0)
+            
+            // 获取视频URL
+            const sources = await getVideoSourceUrl(bvid, selectedCid)
+            if (!sources || sources.length === 0) {
+                throw new Error('No video source found')
+            }
+            
+            const videoUrl = sources[0]
+            
+            // 使用fetch下载视频数据
+            const response = await fetch(videoUrl)
+            
+            if (!response.ok) {
+                throw new Error(`Failed to fetch video: ${response.status}`)
+            }
+            
+            // 获取文件大小
+            const contentLength = response.headers.get('content-length')
+            const totalBytes = contentLength ? parseInt(contentLength, 10) : 0
+            
+            // 创建Reader和Response流
+            const reader = response.body?.getReader()
+            if (!reader) {
+                throw new Error('Failed to create reader')
+            }
+            
+            // 读取数据块
+            let receivedBytes = 0
+            const chunks: Uint8Array[] = []
+            
+            while (true) {
+                const { done, value } = await reader.read()
+                
+                if (done) {
+                    break
+                }
+                
+                chunks.push(value)
+                receivedBytes += value.length
+                
+                // 更新进度
+                if (totalBytes) {
+                    const progress = Math.min((receivedBytes / totalBytes) * 100, 100)
+                    setDownloadProgress(progress)
+                }
+            }
+            
+            // 合并所有数据块
+            const allChunks = new Uint8Array(receivedBytes)
+            let position = 0
+            
+            for (const chunk of chunks) {
+                allChunks.set(chunk, position)
+                position += chunk.length
+            }
+            
+            // 获取MIME类型
+            const mimeType = response.headers.get('content-type') || 'video/mp4'
+            
+            // 传递给父组件
+            onVideoDataFetched(allChunks, mimeType)
+            
+            setDownloadProgress(100)
+        } catch (error) {
+            console.error('Error downloading video:', error)
+        } finally {
+            setIsDownloading(false)
+        }
     }
 
     // 当视频信息加载完成后，自动选择第一个分P
@@ -133,15 +194,25 @@ export function BilibiliControlPanel({ onVideoUrlFetched }: ControlPanelProps) {
                         </Select>
                     </FormControl>
 
-                    <Button 
-                        variant="contained" 
-                        color="primary"
-                        onClick={handleGetVideoUrl}
-                        disabled={!selectedCid || isLoadingUrl}
-                        fullWidth
-                    >
-                        {isLoadingUrl ? <CircularProgress size={24} /> : '获取视频链接'}
-                    </Button>
+                    <Box sx={{ width: '100%', mb: 2 }}>
+                        {downloadProgress > 0 && downloadProgress < 100 && (
+                            <Box sx={{ width: '100%', mb: 1 }}>
+                                <LinearProgress variant="determinate" value={downloadProgress} />
+                                <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 0.5 }}>
+                                    {Math.round(downloadProgress)}%
+                                </Typography>
+                            </Box>
+                        )}
+                        <Button 
+                            variant="contained" 
+                            color="primary"
+                            onClick={handleGetVideo}
+                            disabled={!selectedCid || isDownloading}
+                            fullWidth
+                        >
+                            {isDownloading ? <CircularProgress size={24} /> : '获取视频'}
+                        </Button>
+                    </Box>
                 </>
             )}
 

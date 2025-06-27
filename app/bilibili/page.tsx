@@ -7,10 +7,12 @@ import { BilibiliControlPanel } from '@/modules/bilibili/components/control-pane
 import { BilibiliVideoPlayer } from '@/modules/bilibili/components/video-player'
 
 export default function BilibiliPage() {
-    const [videoUrl, setVideoUrl] = useState<string | null>(null)
+    const [videoData, setVideoData] = useState<Uint8Array | null>(null)
+    const [mimeType, setMimeType] = useState<string>('video/mp4')
 
-    const handleVideoUrlFetched = (url: string) => {
-        setVideoUrl(url)
+    const handleVideoDataFetched = (data: Uint8Array, type: string) => {
+        setVideoData(data)
+        setMimeType(type)
     }
 
     return (
@@ -18,12 +20,12 @@ export default function BilibiliPage() {
             <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3 }}>
                 {/* 左侧控制面板 */}
                 <Box sx={{ width: { xs: '100%', md: '33.33%' } }}>
-                    <BilibiliControlPanel onVideoUrlFetched={handleVideoUrlFetched} />
+                    <BilibiliControlPanel onVideoDataFetched={handleVideoDataFetched} />
                 </Box>
 
                 {/* 右侧视频播放器 */}
                 <Box sx={{ width: { xs: '100%', md: '66.67%' } }}>
-                    <BilibiliVideoPlayer videoUrl={videoUrl} />
+                    <BilibiliVideoPlayer videoData={videoData} mimeType={mimeType} />
                 </Box>
             </Box>
         </PageContainer>
