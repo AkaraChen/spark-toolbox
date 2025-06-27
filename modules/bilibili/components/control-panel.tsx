@@ -1,28 +1,21 @@
 'use client'
 
 import { useState } from 'react'
-import {
-    Box,
-    Button,
-    CircularProgress,
-    FormControl,
-    FormControlLabel,
-    InputLabel,
-    LinearProgress,
-    MenuItem,
-    Paper,
-    Select,
-    SelectChangeEvent,
-    Switch,
-    TextField,
-    Typography,
-} from '@mui/material'
-import { useQuery, useMutation } from '@tanstack/react-query'
-import { getVideoInfo, getVideoSourceUrl } from '../api-client'
+import { Paper } from '@mui/material'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { getVideoSourceUrl } from '../api-client'
 import { VideoInfo } from '../type'
-import { useFFmpeg } from '../hooks/use-ffmpeg'
 import { reverseVideo } from '../utils/reverse-video'
 import { downloadWithProgress } from '@ffmpeg/util'
+import { FFmpeg } from '@ffmpeg/ffmpeg'
+
+// 导入子组件
+import { BvidInput } from './bvid-input'
+import { VideoInfoDisplay } from './video-info-display'
+import { PageSelector } from './page-selector'
+import { VideoOptions } from './video-options'
+import { DownloadProgress } from './download-progress'
+import { VideoActions } from './video-actions'
 
 interface ControlPanelProps {
     onVideoDataFetched: (data: Uint8Array, mimeType: string) => void
@@ -34,56 +27,21 @@ interface ControlPanelProps {
 export function BilibiliControlPanel({
     onVideoDataFetched,
 }: ControlPanelProps) {
-    const [bvid, setBvid] = useState('')
+    const [videoInfo, setVideoInfo] = useState<VideoInfo | null>(null)
     const [selectedCid, setSelectedCid] = useState<number | null>(null)
     const [reverseEnabled, setReverseEnabled] = useState<boolean>(false)
-
-    // 加载FFmpeg
-    const {
-        ffmpeg,
-        isLoading: isLoadingFFmpeg,
-        isError: ffmpegError,
-    } = useFFmpeg()
-
-    // 获取视频信息的查询
-    const {
-        data: videoInfo,
-        isLoading: isLoadingInfo,
-        error: infoError,
-        refetch: refetchInfo,
-    } = useQuery({
-        queryKey: ['bilibili-video-info', bvid],
-        queryFn: () => getVideoInfo(bvid),
-        enabled: false,
-    })
+    const [ffmpeg, setFFmpeg] = useState<FFmpeg | null>(null)
 
     // 获取视频URL的查询
     const { data: videoUrl, refetch: refetchVideoUrl } = useQuery({
-        queryKey: ['bilibili-video-url', bvid, selectedCid],
+        queryKey: ['bilibili-video-url', videoInfo?.bvid, selectedCid],
         queryFn: async () => {
-            if (!bvid || !selectedCid) return null
-            const sources = await getVideoSourceUrl(bvid, selectedCid)
+            if (!videoInfo?.bvid || !selectedCid) return null
+            const sources = await getVideoSourceUrl(videoInfo.bvid, selectedCid)
             return sources && sources.length > 0 ? sources[0] : null
         },
         enabled: false,
     })
-
-    // 处理BV号输入变化
-    const handleBvidChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setBvid(e.target.value)
-        setSelectedCid(null)
-    }
-
-    // 处理获取视频信息按钮点击
-    const handleGetInfo = () => {
-        if (!bvid) return
-        refetchInfo()
-    }
-
-    // 处理分P选择变化
-    const handleCidChange = (e: SelectChangeEvent<number>) => {
-        setSelectedCid(e.target.value as number)
-    }
 
     // 管理下载进度状态
     const [downloadProgress, setDownloadProgress] = useState<number>(0)
@@ -130,7 +88,7 @@ export function BilibiliControlPanel({
             }
         },
         onSuccess: result => {
-            if (reverseEnabled && ffmpeg) {
+            if (reverseEnabled && processVideoMutation) {
                 // 如果启用了倒放，则处理倒放
                 processVideoMutation.mutate(result)
             } else {
@@ -184,162 +142,61 @@ export function BilibiliControlPanel({
             downloadVideo(videoUrl)
         }
     }
-
-    // 当视频信息加载完成后，自动选择第一个分P
-    if (videoInfo && videoInfo.pages.length > 0 && !selectedCid) {
-        setSelectedCid(videoInfo.pages[0].cid)
+    
+    // 处理视频信息获取成功
+    const handleVideoInfoFetched = (info: VideoInfo) => {
+        setVideoInfo(info)
+        // 自动选择第一个分P
+        if (info.pages.length > 0) {
+            setSelectedCid(info.pages[0].cid)
+        }
+    }
+    
+    // 处理分P选择变化
+    const handleCidChange = (cid: number) => {
+        setSelectedCid(cid)
     }
 
     return (
         <Paper sx={{ p: 3 }}>
-            <Box sx={{ mb: 3 }}>
-                <TextField
-                    label='BV号'
-                    value={bvid}
-                    onChange={handleBvidChange}
-                    fullWidth
-                    placeholder='例如：BV1xx411c7mD'
-                    helperText='输入Bilibili视频的BV号'
-                    sx={{ mb: 2 }}
-                />
-                <Button
-                    variant='contained'
-                    onClick={handleGetInfo}
-                    disabled={!bvid || isLoadingInfo}
-                    fullWidth
-                >
-                    {isLoadingInfo ? (
-                        <CircularProgress size={24} />
-                    ) : (
-                        '获取视频信息'
-                    )}
-                </Button>
-            </Box>
+            {/* BV号输入组件 */}
+            <BvidInput onVideoInfoFetched={handleVideoInfoFetched} />
 
             {videoInfo && (
                 <>
-                    <Box sx={{ mb: 3 }}>
-                        <Typography variant='subtitle1' gutterBottom>
-                            {videoInfo.title}
-                        </Typography>
-                        <Typography variant='body2' color='text.secondary'>
-                            UP主: {videoInfo.owner.name}
-                        </Typography>
-                    </Box>
+                    {/* 视频信息显示组件 */}
+                    <VideoInfoDisplay videoInfo={videoInfo} />
 
-                    <FormControl fullWidth sx={{ mb: 3 }}>
-                        <InputLabel id='page-select-label'>选择分P</InputLabel>
-                        <Select
-                            labelId='page-select-label'
-                            value={selectedCid || ''}
-                            label='选择分P'
-                            onChange={handleCidChange}
-                        >
-                            {videoInfo.pages.map(page => (
-                                <MenuItem key={page.cid} value={page.cid}>
-                                    {page.name}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
+                    {/* 分P选择器组件 */}
+                    <PageSelector 
+                        videoInfo={videoInfo} 
+                        selectedCid={selectedCid} 
+                        onCidChange={handleCidChange} 
+                    />
 
-                    <Box sx={{ mb: 3 }}>
-                        <FormControlLabel
-                            control={
-                                <Switch
-                                    checked={reverseEnabled}
-                                    onChange={e =>
-                                        setReverseEnabled(e.target.checked)
-                                    }
-                                    disabled={
-                                        isLoadingFFmpeg ||
-                                        isDownloading ||
-                                        processVideoMutation.isPending
-                                    }
-                                />
-                            }
-                            label='倒放视频'
-                        />
-                        {isLoadingFFmpeg && (
-                            <Box
-                                sx={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    mt: 1,
-                                }}
-                            >
-                                <CircularProgress size={16} sx={{ mr: 1 }} />
-                                <Typography
-                                    variant='caption'
-                                    color='text.secondary'
-                                >
-                                    加载FFmpeg中...
-                                </Typography>
-                            </Box>
-                        )}
-                        {ffmpegError && (
-                            <Typography
-                                variant='caption'
-                                color='error'
-                                sx={{ mt: 1, display: 'block' }}
-                            >
-                                FFmpeg加载失败，倒放功能不可用
-                            </Typography>
-                        )}
-                    </Box>
+                    {/* 视频选项组件 */}
+                    <VideoOptions 
+                        reverseEnabled={reverseEnabled}
+                        onReverseChange={setReverseEnabled}
+                        isDownloading={isDownloading}
+                        isProcessing={processVideoMutation.isPending}
+                        onFFmpegLoaded={setFFmpeg}
+                    />
 
-                    <Box sx={{ width: '100%', mb: 2 }}>
-                        {downloadProgress > 0 && downloadProgress < 100 && (
-                            <Box sx={{ width: '100%', mb: 1 }}>
-                                <LinearProgress
-                                    variant='determinate'
-                                    value={downloadProgress}
-                                />
-                                <Typography
-                                    variant='body2'
-                                    color='text.secondary'
-                                    align='center'
-                                    sx={{ mt: 0.5 }}
-                                >
-                                    {Math.round(downloadProgress)}%
-                                </Typography>
-                            </Box>
-                        )}
-                        <Button
-                            variant='contained'
-                            color='primary'
-                            onClick={handleGetVideo}
-                            disabled={
-                                !selectedCid ||
-                                isDownloading ||
-                                processVideoMutation.isPending
-                            }
-                            fullWidth
-                        >
-                            {isDownloading ? (
-                                <CircularProgress size={24} />
-                            ) : processVideoMutation.isPending ? (
-                                <Box
-                                    sx={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: 1,
-                                    }}
-                                >
-                                    <CircularProgress size={24} /> 倒放处理中
-                                </Box>
-                            ) : (
-                                '获取视频'
-                            )}
-                        </Button>
-                    </Box>
+                    {/* 下载进度组件 */}
+                    <DownloadProgress 
+                        progress={downloadProgress} 
+                        visible={downloadProgress > 0 && downloadProgress < 100} 
+                    />
+
+                    {/* 视频操作组件 */}
+                    <VideoActions 
+                        onGetVideo={handleGetVideo}
+                        isDownloading={isDownloading}
+                        isProcessing={processVideoMutation.isPending}
+                        disabled={!selectedCid}
+                    />
                 </>
-            )}
-
-            {infoError && (
-                <Typography color='error' sx={{ mt: 2 }}>
-                    获取视频信息失败，请检查BV号是否正确
-                </Typography>
             )}
         </Paper>
     )
