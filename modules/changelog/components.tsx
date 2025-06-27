@@ -16,7 +16,6 @@ import {
     TextField,
 } from '@mui/material'
 import { useChangelogInfo } from './hooks'
-import { useStore } from '@/modules/universal/store'
 
 /**
  * Component to search for and display package changelog information
