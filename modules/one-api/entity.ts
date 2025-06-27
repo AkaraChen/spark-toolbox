@@ -29,8 +29,8 @@ export const oneApiProviderEntity: Entity<OneApiProvider> = {
                 headerName: 'API Key',
             },
             {
-                field: 'URL',
-                headerName: 'API Base URL',
+                field: 'apiBase',
+                headerName: 'URL',
                 renderCell: URLColumn,
             },
             {
