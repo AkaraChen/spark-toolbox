@@ -43,19 +43,9 @@ export function BilibiliVideoPlayer({
     }, [videoUrl])
 
     return (
-        <Paper
-            sx={{
-                p: 3,
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: videoData ? 'flex-start' : 'center',
-                alignItems: videoData ? 'flex-start' : 'center',
-                minHeight: 500,
-            }}
-        >
+        <Paper>
             {videoData ? (
-                <Box sx={{ width: '100%', mt: 2 }}>
+                <Box sx={{ width: '100%' }}>
                     <video
                         ref={videoRef}
                         controls
@@ -63,7 +53,15 @@ export function BilibiliVideoPlayer({
                     />
                 </Box>
             ) : (
-                <Typography color='text.secondary'>
+                <Typography
+                    color='text.secondary'
+                    style={{
+                        height: '100px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}
+                >
                     请在左侧输入BV号并获取视频链接
                 </Typography>
             )}
