@@ -3,6 +3,7 @@ import { NextAppProvider } from '@toolpad/core/nextjs'
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter'
 import DashboardIcon from '@mui/icons-material/Dashboard'
 import ApiIcon from '@mui/icons-material/Api'
+import SettingsIcon from '@mui/icons-material/Settings'
 import LinearProgress from '@mui/material/LinearProgress'
 import type { Branding, Navigation } from '@toolpad/core/AppProvider'
 
@@ -18,17 +19,22 @@ export const metadata: Metadata = {
 const NAVIGATION: Navigation = [
     {
         kind: 'header',
-        title: 'Menus',
+        title: '菜单',
     },
     {
         segment: '',
-        title: 'Dashboard',
+        title: '仪表盘',
         icon: <DashboardIcon />,
     },
     {
         segment: 'one-api',
         title: 'One API',
         icon: <ApiIcon />,
+    },
+    {
+        segment: 'settings',
+        title: '系统设置',
+        icon: <SettingsIcon />,
     },
 ]
 
