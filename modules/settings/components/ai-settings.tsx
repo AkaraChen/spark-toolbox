@@ -14,6 +14,7 @@ import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import { useStore } from '@/modules/universal/store'
 import { useNotification } from '@/modules/universal/components/notification-provider'
+import { useModels } from '@/modules/ai/hooks'
 
 export function AISettings() {
     const {
@@ -33,7 +34,7 @@ export function AISettings() {
 
     const { showNotification } = useNotification()
     const [showApiKey, setShowApiKey] = useState(false)
-    
+
     // 检查 API 设置是否有效
     const isApiConfigValid = Boolean(openaiBase && openaiKey)
 
@@ -69,6 +70,8 @@ export function AISettings() {
     const toggleShowApiKey = () => {
         setShowApiKey(!showApiKey)
     }
+
+    const { data: models } = useModels()
 
     return (
         <Stack spacing={3} sx={{ py: 3 }}>
@@ -118,9 +121,13 @@ export function AISettings() {
                     label='大型模型'
                     onChange={handleLargeModelChange}
                 >
-                    <MenuItem value='gpt-4.1'>GPT-4.1</MenuItem>
-                    <MenuItem value='gpt-4-turbo'>GPT-4 Turbo</MenuItem>
-                    <MenuItem value='gpt-4o'>GPT-4o</MenuItem>
+                    {
+                        models?.map(model => (
+                            <MenuItem key={model.id} value={model.id}>
+                                {model.id}
+                            </MenuItem>
+                        ))
+                    }
                 </Select>
             </FormControl>
 
@@ -132,11 +139,13 @@ export function AISettings() {
                     label='基础模型'
                     onChange={handleBaseModelChange}
                 >
-                    <MenuItem value='gpt-4.1-mini'>GPT-4.1 Mini</MenuItem>
-                    <MenuItem value='gpt-3.5-turbo'>GPT-3.5 Turbo</MenuItem>
-                    <MenuItem value='gpt-3.5-turbo-16k'>
-                        GPT-3.5 Turbo 16K
-                    </MenuItem>
+                    {
+                        models?.map(model => (
+                            <MenuItem key={model.id} value={model.id}>
+                                {model.id}
+                            </MenuItem>
+                        ))
+                    }
                 </Select>
             </FormControl>
 
@@ -148,11 +157,13 @@ export function AISettings() {
                     label='小型模型'
                     onChange={handleSmallModelChange}
                 >
-                    <MenuItem value='gpt-4.1-nano'>GPT-4.1 Nano</MenuItem>
-                    <MenuItem value='gpt-3.5-turbo-instruct'>
-                        GPT-3.5 Turbo Instruct
-                    </MenuItem>
-                    <MenuItem value='davinci-002'>Davinci-002</MenuItem>
+                    {
+                        models?.map(model => (
+                            <MenuItem key={model.id} value={model.id}>
+                                {model.id}
+                            </MenuItem>
+                        ))
+                    }
                 </Select>
             </FormControl>
 
