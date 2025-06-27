@@ -20,7 +20,7 @@ export function createBackup(): string {
     const kvStoreData = JSON.parse(GLOBAL_STORE.backup())
 
     // Get Zustand Store data from localStorage
-    const zustandStoreKey = STORAGE.STORE_NAME
+    const zustandStoreKey = STORAGE.SETTING_STORE_NAME
     const zustandStoreRaw = localStorage.getItem(zustandStoreKey)
     const zustandStore = zustandStoreRaw ? JSON.parse(zustandStoreRaw) : {}
 
@@ -61,7 +61,7 @@ export function restoreFromBackup(backupJson: string): {
 
         // Restore Zustand Store data
         localStorage.setItem(
-            STORAGE.STORE_NAME,
+            STORAGE.SETTING_STORE_NAME,
             JSON.stringify(backupData.settings),
         )
 

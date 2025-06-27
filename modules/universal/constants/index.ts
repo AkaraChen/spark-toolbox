@@ -1,4 +1,4 @@
-export const STORE_PATH = 'SPARK_STORE'
+export const DATA_STORE_PATH = 'SPARK_STORE'
 
 export const OPENAI = {
     DEFAULT_BASE_URL: 'https://api.openai.com/v1',
@@ -10,5 +10,5 @@ export const OPENAI = {
 }
 
 export const STORAGE = {
-    STORE_NAME: 'spark-store',
+    SETTING_STORE_NAME: 'SPARK_SETTING_STORE',
 }
