@@ -5,6 +5,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard'
 import ApiIcon from '@mui/icons-material/Api'
 import SettingsIcon from '@mui/icons-material/Settings'
 import TranslateIcon from '@mui/icons-material/Translate'
+import HistoryIcon from '@mui/icons-material/History'
 import LinearProgress from '@mui/material/LinearProgress'
 import type { Branding, Navigation } from '@toolpad/core/AppProvider'
 
@@ -36,6 +37,11 @@ const NAVIGATION: Navigation = [
         segment: 'translator',
         title: '翻译',
         icon: <TranslateIcon />,
+    },
+    {
+        segment: 'changelog',
+        title: '更新日志',
+        icon: <HistoryIcon />,
     },
     {
         segment: 'settings',
