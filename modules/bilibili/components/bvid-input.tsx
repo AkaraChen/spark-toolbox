@@ -1,10 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { Box, Button, CircularProgress, TextField } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
 import { getVideoInfo } from '../api-client'
 import { VideoInfo } from '../type'
+import { useQueryState } from 'nuqs'
 
 interface BvidInputProps {
     onVideoInfoFetched: (info: VideoInfo) => void
@@ -14,7 +15,9 @@ interface BvidInputProps {
  * BV号输入组件
  */
 export function BvidInput({ onVideoInfoFetched }: BvidInputProps) {
-    const [bvid, setBvid] = useState('')
+    const [bvid, setBvid] = useQueryState('bvid', {
+        defaultValue: '',
+    })
 
     // 获取视频信息的查询
     const {

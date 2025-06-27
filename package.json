@@ -23,6 +23,7 @@
         "hosted-git-info": "^8.1.0",
         "nanoid": "^5.1.5",
         "next": "^15",
+        "nuqs": "^2.4.3",
         "octokit": "^5.0.3",
         "openai": "^5.8.1",
         "query-registry": "^4.1.0",
