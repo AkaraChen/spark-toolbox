@@ -40,7 +40,7 @@ const NAVIGATION: Navigation = [
     },
     {
         segment: 'changelog',
-        title: '更新日志',
+        title: '查找更新日志',
         icon: <HistoryIcon />,
     },
     {

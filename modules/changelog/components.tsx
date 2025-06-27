@@ -39,10 +39,6 @@ export function ChangelogFinder() {
 
     return (
         <Box>
-            <Typography variant="h5" component="h2" gutterBottom>
-                Package Changelog Finder
-            </Typography>
-            
             <Stack direction="row" spacing={2} sx={{ mb: 3 }}>
                 <TextField
                     label="Package Name"
