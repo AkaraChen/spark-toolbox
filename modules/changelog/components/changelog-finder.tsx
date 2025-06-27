@@ -15,7 +15,7 @@ import {
     TableRow,
     TextField,
 } from '@mui/material'
-import { useChangelogInfo } from '../hooks'
+import { useChangelogInfo } from '../hooks/changelog-info'
 
 /**
  * Component to search for and display package changelog information

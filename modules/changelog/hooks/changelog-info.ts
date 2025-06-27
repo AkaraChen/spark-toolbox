@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
-import { getChangelogInfo } from './api/client'
-import { ChangelogResult } from './api/types'
-import { useNotification } from '../universal/hooks/use-notification'
+import { getChangelogInfo } from '../api/client'
+import { ChangelogResult } from '../api/types'
+import { useNotification } from '../../universal/hooks/use-notification'
 import { useStore } from '@/modules/universal/store/app-state'
 
 /**
