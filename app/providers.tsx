@@ -1,18 +1,24 @@
 'use client'
 
-import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
-import { PropsWithChildren } from 'react'
-import { NotificationProvider } from '@/modules/universal/components/notification-provider'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ThemeProvider } from '@mui/material/styles'
+import { NotificationsProvider } from '@toolpad/core'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
+import { PropsWithChildren } from 'react'
+import theme from '../theme'
 
 const queryClient = new QueryClient()
 
 export default function Providers({ children }: PropsWithChildren) {
     return (
         <NuqsAdapter>
-            <QueryClientProvider client={queryClient}>
-                <NotificationProvider>{children}</NotificationProvider>
-            </QueryClientProvider>
+            <ThemeProvider theme={theme}>
+                <NotificationsProvider>
+                    <QueryClientProvider client={queryClient}>
+                        {children}
+                    </QueryClientProvider>
+                </NotificationsProvider>
+            </ThemeProvider>
         </NuqsAdapter>
     )
 }

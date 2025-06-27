@@ -13,7 +13,7 @@ import IconButton from '@mui/material/IconButton'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import { useStore } from '@/modules/universal/store/app-state'
-import { useNotification } from '@/modules/universal/components/notification-provider'
+import { useNotification } from '@/modules/universal/hooks/use-notification'
 import { useModels } from '@/modules/ai/hooks/models'
 import { ModelSelector } from './model-selector'
 
@@ -32,7 +32,7 @@ export function AISettings() {
         resetSettings,
     } = useStore()
 
-    const { showNotification } = useNotification()
+    const { showInfo } = useNotification()
     const [showApiKey, setShowApiKey] = useState(false)
 
     // 检查 API 设置是否有效
@@ -64,7 +64,7 @@ export function AISettings() {
 
     const handleResetSettings = () => {
         resetSettings()
-        showNotification('AI 设置已重置', 'info')
+        showInfo('AI settings have been reset')
     }
 
     const toggleShowApiKey = () => {

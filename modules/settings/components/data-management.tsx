@@ -13,22 +13,21 @@ import {
     restoreFromBackup,
     downloadBackup,
 } from '@/modules/settings/utils/backup'
-import { useNotification } from '@/modules/universal/components/notification-provider'
+import { useNotification } from '@/modules/universal/hooks/use-notification'
 
 export function DataManagement() {
     const [backupData, setBackupData] = useState<string>('')
     const [restoreData, setRestoreData] = useState<string>('')
-    const { showNotification } = useNotification()
+    const { showSuccess, showError } = useNotification()
 
     const handleBackup = () => {
         try {
             const backupJson = createBackup()
             setBackupData(backupJson)
-            showNotification('完整备份数据已生成', 'success')
+            showSuccess('Backup data generated successfully!')
         } catch (error) {
-            showNotification(
-                `备份失败: ${error instanceof Error ? error.message : '未知错误'}`,
-                'error',
+            showError(
+                `Backup failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
             )
         }
     }
@@ -36,6 +35,7 @@ export function DataManagement() {
     const handleDownloadBackup = () => {
         if (!backupData) return
         downloadBackup(backupData)
+        showSuccess('Backup file downloaded!')
     }
 
     const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,19 +55,16 @@ export function DataManagement() {
 
         try {
             const result = restoreFromBackup(restoreData)
-            showNotification(
-                result.message,
-                result.success ? 'success' : 'error',
-            )
-
             if (result.success) {
+                showSuccess(result.message)
                 // Clear the restore data field after successful restore
                 setRestoreData('')
+            } else {
+                showError(result.message)
             }
         } catch (error) {
-            showNotification(
-                `恢复失败: ${error instanceof Error ? error.message : '无效的备份数据'}`,
-                'error',
+            showError(
+                `Restore failed: ${error instanceof Error ? error.message : 'Invalid backup data'}`,
             )
         }
     }

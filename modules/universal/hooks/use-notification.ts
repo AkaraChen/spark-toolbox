@@ -1,17 +1,21 @@
-import { useNotification as useBaseNotification } from '../components/notification-provider'
+import { useNotifications } from '@toolpad/core'
 
 /**
  * Hook to access notification functions with convenience methods
  * @returns Object containing notification functions
  */
 export function useNotification() {
-    const { showNotification } = useBaseNotification()
+    const notifications = useNotifications()
 
     return {
-        showNotification,
-        showSuccess: (message: string) => showNotification(message, 'success'),
-        showError: (message: string) => showNotification(message, 'error'),
-        showWarning: (message: string) => showNotification(message, 'warning'),
-        showInfo: (message: string) => showNotification(message, 'info'),
+        showSuccess: (message: string) =>
+            notifications.show(message, { severity: 'success' }),
+        showError: (message: string) =>
+            notifications.show(message, { severity: 'error' }),
+        showWarning: (message: string) =>
+            notifications.show(message, { severity: 'warning' }),
+        showInfo: (message: string) =>
+            notifications.show(message, { severity: 'info' }),
+        ...notifications,
     }
 }

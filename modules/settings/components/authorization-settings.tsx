@@ -13,11 +13,11 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import Typography from '@mui/material/Typography'
 import Link from '@mui/material/Link'
 import { useStore } from '@/modules/universal/store/app-state'
-import { useNotification } from '@/modules/universal/components/notification-provider'
+import { useNotification } from '@/modules/universal/hooks/use-notification'
 
 export function AuthorizationSettings() {
     const { githubToken, setGithubToken, resetAuthSettings } = useStore()
-    const { showNotification } = useNotification()
+    const { showInfo } = useNotification()
     const [showToken, setShowToken] = useState(false)
 
     const handleGithubTokenChange = (
@@ -28,7 +28,7 @@ export function AuthorizationSettings() {
 
     const handleResetSettings = () => {
         resetAuthSettings()
-        showNotification('授权设置已重置', 'info')
+        showInfo('Authorization settings have been reset')
     }
 
     const toggleShowToken = () => {
