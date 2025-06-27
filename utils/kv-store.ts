@@ -8,11 +8,13 @@ export interface IKvStore {
     remove: (scope: string, key: string) => void
     clear: (scope: string) => void
     keys: (scope: string) => string[]
+    backup: () => string
+    restore: (data: string) => void
 }
 
 export class KvStore implements IKvStore {
     constructor(private key: string) {}
-    read(): Record<string, Record<string, DataModel>> {
+    private read(): Record<string, Record<string, DataModel>> {
         const item = localStorage.getItem(this.key)
         if (!item) {
             return {}
@@ -48,6 +50,13 @@ export class KvStore implements IKvStore {
     keys(scope: string): string[] {
         const items = this.read()
         return Object.keys(items[scope])
+    }
+    backup(): string {
+        return JSON.stringify(this.read(), null, 2)
+    }
+    restore(data: string): void {
+        const items = JSON.parse(data)
+        localStorage.setItem(this.key, JSON.stringify(items))
     }
 }
 
