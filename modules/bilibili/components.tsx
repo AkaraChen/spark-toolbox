@@ -85,13 +85,10 @@ export function BilibiliPlayer() {
     }
 
     return (
-        <Grid container spacing={3}>
+        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3 }}>
             {/* 左侧表单 */}
-            <Grid item xs={12} md={4}>
+            <Box sx={{ width: { xs: '100%', md: '33.33%' } }}>
                 <Paper sx={{ p: 3 }}>
-                    <Typography variant="h6" gutterBottom>
-                        Bilibili视频播放器
-                    </Typography>
                     
                     <Box sx={{ mb: 3 }}>
                         <TextField
@@ -122,16 +119,6 @@ export function BilibiliPlayer() {
                                 <Typography variant="body2" color="text.secondary">
                                     UP主: {videoInfo.owner.name}
                                 </Typography>
-                                <Box 
-                                    component="img" 
-                                    src={videoInfo.pic} 
-                                    alt={videoInfo.title}
-                                    sx={{ 
-                                        width: '100%', 
-                                        borderRadius: 1,
-                                        mt: 2
-                                    }}
-                                />
                             </Box>
 
                             <FormControl fullWidth sx={{ mb: 3 }}>
@@ -168,10 +155,10 @@ export function BilibiliPlayer() {
                         </Typography>
                     )}
                 </Paper>
-            </Grid>
+            </Box>
 
             {/* 右侧视频播放区 */}
-            <Grid item xs={12} md={8}>
+            <Box sx={{ width: { xs: '100%', md: '66.67%' } }}>
                 <Paper 
                     sx={{ 
                         p: 3, 
@@ -184,26 +171,20 @@ export function BilibiliPlayer() {
                     }}
                 >
                     {videoUrl ? (
-                        <>
-                            <Typography variant="h6" gutterBottom>
-                                {videoInfo?.title} {selectedCid && videoInfo?.pages.find(p => p.cid === selectedCid)?.name}
-                            </Typography>
                             <Box sx={{ width: '100%', mt: 2 }}>
                                 <video 
                                     controls 
-                                    autoPlay 
                                     style={{ width: '100%', maxHeight: '70vh' }}
                                     src={videoUrl}
                                 />
                             </Box>
-                        </>
                     ) : (
                         <Typography color="text.secondary">
                             请在左侧输入BV号并获取视频链接
                         </Typography>
                     )}
                 </Paper>
-            </Grid>
-        </Grid>
+            </Box>
+        </Box>
     )
 }
