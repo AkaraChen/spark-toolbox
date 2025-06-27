@@ -91,22 +91,24 @@ export function AISettings() {
                 onChange={handleOpenAIKeyChange}
                 placeholder='sk-...'
                 helperText='您的 OpenAI API 密钥'
-                InputProps={{
-                    endAdornment: (
-                        <InputAdornment position='end'>
-                            <IconButton
-                                aria-label='toggle password visibility'
-                                onClick={toggleShowApiKey}
-                                edge='end'
-                            >
-                                {showApiKey ? (
-                                    <VisibilityOff />
-                                ) : (
-                                    <Visibility />
-                                )}
-                            </IconButton>
-                        </InputAdornment>
-                    ),
+                slotProps={{
+                    input: {
+                        endAdornment: (
+                            <InputAdornment position='end'>
+                                <IconButton
+                                    aria-label='toggle password visibility'
+                                    onClick={toggleShowApiKey}
+                                    edge='end'
+                                >
+                                    {showApiKey ? (
+                                        <VisibilityOff />
+                                    ) : (
+                                        <Visibility />
+                                    )}
+                                </IconButton>
+                            </InputAdornment>
+                        ),
+                    },
                 }}
             />
 
