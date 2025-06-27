@@ -142,7 +142,7 @@ export function BilibiliControlPanel({
             downloadVideo(videoUrl)
         }
     }
-    
+
     // 处理视频信息获取成功
     const handleVideoInfoFetched = (info: VideoInfo) => {
         setVideoInfo(info)
@@ -151,7 +151,7 @@ export function BilibiliControlPanel({
             setSelectedCid(info.pages[0].cid)
         }
     }
-    
+
     // 处理分P选择变化
     const handleCidChange = (cid: number) => {
         setSelectedCid(cid)
@@ -168,14 +168,14 @@ export function BilibiliControlPanel({
                     <VideoInfoDisplay videoInfo={videoInfo} />
 
                     {/* 分P选择器组件 */}
-                    <PageSelector 
-                        videoInfo={videoInfo} 
-                        selectedCid={selectedCid} 
-                        onCidChange={handleCidChange} 
+                    <PageSelector
+                        videoInfo={videoInfo}
+                        selectedCid={selectedCid}
+                        onCidChange={handleCidChange}
                     />
 
                     {/* 视频选项组件 */}
-                    <VideoOptions 
+                    <VideoOptions
                         reverseEnabled={reverseEnabled}
                         onReverseChange={setReverseEnabled}
                         isDownloading={isDownloading}
@@ -184,13 +184,13 @@ export function BilibiliControlPanel({
                     />
 
                     {/* 下载进度组件 */}
-                    <DownloadProgress 
-                        progress={downloadProgress} 
-                        visible={downloadProgress > 0 && downloadProgress < 100} 
+                    <DownloadProgress
+                        progress={downloadProgress}
+                        visible={downloadProgress > 0 && downloadProgress < 100}
                     />
 
                     {/* 视频操作组件 */}
-                    <VideoActions 
+                    <VideoActions
                         onGetVideo={handleGetVideo}
                         isDownloading={isDownloading}
                         isProcessing={processVideoMutation.isPending}

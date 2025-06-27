@@ -1,6 +1,12 @@
 'use client'
 
-import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material'
+import {
+    FormControl,
+    InputLabel,
+    MenuItem,
+    Select,
+    SelectChangeEvent,
+} from '@mui/material'
 import { VideoInfo } from '../type'
 
 interface PageSelectorProps {
@@ -12,7 +18,11 @@ interface PageSelectorProps {
 /**
  * 视频分P选择器组件
  */
-export function PageSelector({ videoInfo, selectedCid, onCidChange }: PageSelectorProps) {
+export function PageSelector({
+    videoInfo,
+    selectedCid,
+    onCidChange,
+}: PageSelectorProps) {
     const handleChange = (e: SelectChangeEvent<number>) => {
         onCidChange(e.target.value as number)
     }

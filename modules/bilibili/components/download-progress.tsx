@@ -12,13 +12,10 @@ interface DownloadProgressProps {
  */
 export function DownloadProgress({ progress, visible }: DownloadProgressProps) {
     if (!visible) return null
-    
+
     return (
         <Box sx={{ width: '100%', mb: 1 }}>
-            <LinearProgress
-                variant='determinate'
-                value={progress}
-            />
+            <LinearProgress variant='determinate' value={progress} />
             <Typography
                 variant='body2'
                 color='text.secondary'

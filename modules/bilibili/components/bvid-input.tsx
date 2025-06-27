@@ -30,7 +30,7 @@ export function BvidInput({ onVideoInfoFetched }: BvidInputProps) {
         queryFn: () => getVideoInfo(bvid),
         enabled: false,
     })
-    
+
     // 当视频信息加载成功时，通知父组件
     useEffect(() => {
         if (videoInfo) {
@@ -72,7 +72,7 @@ export function BvidInput({ onVideoInfoFetched }: BvidInputProps) {
                     '获取视频信息'
                 )}
             </Button>
-            
+
             {infoError && (
                 <Box sx={{ color: 'error.main', mt: 2 }}>
                     获取视频信息失败，请检查BV号是否正确

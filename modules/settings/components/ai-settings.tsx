@@ -15,6 +15,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import { useStore } from '@/modules/universal/store'
 import { useNotification } from '@/modules/universal/components/notification-provider'
 import { useModels } from '@/modules/ai/hooks'
+import { ModelSelector } from './model-selector'
 
 export function AISettings() {
     const {
@@ -29,7 +30,6 @@ export function AISettings() {
         setBaseModel,
         setSmallModel,
         resetSettings,
-        openai,
     } = useStore()
 
     const { showNotification } = useNotification()
@@ -113,53 +113,31 @@ export function AISettings() {
                 }}
             />
 
-            <FormControl fullWidth disabled={!isApiConfigValid}>
-                <InputLabel id='large-model-label'>大型模型</InputLabel>
-                <Select
-                    labelId='large-model-label'
-                    value={largeModel}
-                    label='大型模型'
-                    onChange={handleLargeModelChange}
-                >
-                    {models?.map(model => (
-                        <MenuItem key={model.id} value={model.id}>
-                            {model.id}
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
+            <ModelSelector
+                models={models?.map(model => model.id) || []}
+                selectedModel={largeModel}
+                onModelChange={setLargeModel}
+                disabled={!isApiConfigValid || !models}
+                label='大型模型'
+            />
 
-            <FormControl fullWidth disabled={!isApiConfigValid}>
-                <InputLabel id='base-model-label'>基础模型</InputLabel>
-                <Select
-                    labelId='base-model-label'
-                    value={baseModel}
-                    label='基础模型'
-                    onChange={handleBaseModelChange}
-                >
-                    {models?.map(model => (
-                        <MenuItem key={model.id} value={model.id}>
-                            {model.id}
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
+            <ModelSelector
+                models={models?.map(model => model.id) || []}
+                selectedModel={baseModel}
+                onModelChange={setBaseModel}
+                disabled={!isApiConfigValid || !models}
+                label='基础模型'
+            />
 
-            <FormControl fullWidth disabled={!isApiConfigValid}>
-                <InputLabel id='small-model-label'>小型模型</InputLabel>
-                <Select
-                    labelId='small-model-label'
-                    value={smallModel}
-                    label='小型模型'
-                    onChange={handleSmallModelChange}
-                >
-                    {models?.map(model => (
-                        <MenuItem key={model.id} value={model.id}>
-                            {model.id}
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
+            <ModelSelector
+                models={models?.map(model => model.id) || []}
+                selectedModel={smallModel}
+                onModelChange={setSmallModel}
+                disabled={!isApiConfigValid || !models}
+                label='小型模型'
+            />
+
+            
 
             <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
                 <Button

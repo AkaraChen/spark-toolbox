@@ -16,20 +16,30 @@ export function VideoInfoDisplay({ videoInfo }: VideoInfoDisplayProps) {
     const handleDownloadCover = async () => {
         if (videoInfo?.pic) {
             try {
-                await downloadViaProxy(videoInfo.pic, `${videoInfo.title}-封面.jpg`)
+                await downloadViaProxy(
+                    videoInfo.pic,
+                    `${videoInfo.title}-封面.jpg`,
+                )
             } catch (error) {
                 console.error('下载封面失败:', error)
             }
         }
     }
-    
+
     return (
         <Box sx={{ mb: 3 }}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1 }}>
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'flex-start',
+                    mb: 1,
+                }}
+            >
                 <Typography variant='subtitle1' gutterBottom>
                     {videoInfo.title}
                 </Typography>
-                <Button 
+                <Button
                     size='small'
                     variant='outlined'
                     onClick={handleDownloadCover}

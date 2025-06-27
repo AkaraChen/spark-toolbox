@@ -1,7 +1,13 @@
 'use client'
 
 import { useEffect } from 'react'
-import { Box, CircularProgress, FormControlLabel, Switch, Typography } from '@mui/material'
+import {
+    Box,
+    CircularProgress,
+    FormControlLabel,
+    Switch,
+    Typography,
+} from '@mui/material'
 import { useFFmpeg } from '../hooks/use-ffmpeg'
 import { FFmpeg } from '@ffmpeg/ffmpeg'
 
@@ -16,12 +22,12 @@ interface VideoOptionsProps {
 /**
  * 视频选项组件
  */
-export function VideoOptions({ 
-    reverseEnabled, 
+export function VideoOptions({
+    reverseEnabled,
     onReverseChange,
     isDownloading,
     isProcessing,
-    onFFmpegLoaded
+    onFFmpegLoaded,
 }: VideoOptionsProps) {
     // 加载FFmpeg
     const {
@@ -42,7 +48,9 @@ export function VideoOptions({
                     <Switch
                         checked={reverseEnabled}
                         onChange={e => onReverseChange(e.target.checked)}
-                        disabled={isLoadingFFmpeg || isDownloading || isProcessing}
+                        disabled={
+                            isLoadingFFmpeg || isDownloading || isProcessing
+                        }
                     />
                 }
                 label='倒放视频'

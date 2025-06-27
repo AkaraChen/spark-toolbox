@@ -12,11 +12,11 @@ interface VideoActionsProps {
 /**
  * 视频操作组件
  */
-export function VideoActions({ 
-    onGetVideo, 
-    isDownloading, 
-    isProcessing, 
-    disabled 
+export function VideoActions({
+    onGetVideo,
+    isDownloading,
+    isProcessing,
+    disabled,
 }: VideoActionsProps) {
     return (
         <Box sx={{ width: '100%', mb: 2 }}>
