@@ -6,18 +6,22 @@ import {
     Button, 
     CircularProgress, 
     FormControl, 
+    FormControlLabel, 
     InputLabel, 
     LinearProgress, 
     MenuItem, 
     Paper, 
     Select, 
     SelectChangeEvent, 
+    Switch,
     TextField, 
     Typography 
 } from '@mui/material'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { getVideoInfo, getVideoSourceUrl } from '../api-client'
 import { VideoInfo } from '../type'
+import { useFFmpeg } from '../hooks/use-ffmpeg'
+import { reverseVideo } from '../utils/reverse-video'
 
 interface ControlPanelProps {
     onVideoDataFetched: (data: Uint8Array, mimeType: string) => void
@@ -31,6 +35,11 @@ export function BilibiliControlPanel({ onVideoDataFetched }: ControlPanelProps) 
     const [selectedCid, setSelectedCid] = useState<number | null>(null)
     const [downloadProgress, setDownloadProgress] = useState<number>(0)
     const [isDownloading, setIsDownloading] = useState<boolean>(false)
+    const [reverseEnabled, setReverseEnabled] = useState<boolean>(false)
+    const [isProcessing, setIsProcessing] = useState<boolean>(false)
+    
+    // 加载FFmpeg
+    const { ffmpeg, isLoading: isLoadingFFmpeg, isError: ffmpegError } = useFFmpeg()
 
     // 获取视频信息的查询
     const { 
@@ -129,10 +138,30 @@ export function BilibiliControlPanel({ onVideoDataFetched }: ControlPanelProps) 
             // 获取MIME类型
             const mimeType = response.headers.get('content-type') || 'video/mp4'
             
-            // 传递给父组件
-            onVideoDataFetched(allChunks, mimeType)
-            
-            setDownloadProgress(100)
+            // 如果启用了倒放功能且FFmpeg已加载，则处理倒放
+            if (reverseEnabled && ffmpeg) {
+                try {
+                    setIsProcessing(true)
+                    setDownloadProgress(0) // 重置进度条
+                    
+                    // 处理倒放
+                    const reversedData = await reverseVideo(ffmpeg, allChunks, mimeType)
+                    
+                    // 传递倒放后的视频数据给父组件
+                    onVideoDataFetched(reversedData, mimeType)
+                } catch (error) {
+                    console.error('Error reversing video:', error)
+                    // 如果倒放失败，使用原始视频
+                    onVideoDataFetched(allChunks, mimeType)
+                } finally {
+                    setIsProcessing(false)
+                    setDownloadProgress(100)
+                }
+            } else {
+                // 直接传递原始视频数据给父组件
+                onVideoDataFetched(allChunks, mimeType)
+                setDownloadProgress(100)
+            }
         } catch (error) {
             console.error('Error downloading video:', error)
         } finally {
@@ -193,6 +222,32 @@ export function BilibiliControlPanel({ onVideoDataFetched }: ControlPanelProps) 
                             ))}
                         </Select>
                     </FormControl>
+                    
+                    <Box sx={{ mb: 3 }}>
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    checked={reverseEnabled}
+                                    onChange={(e) => setReverseEnabled(e.target.checked)}
+                                    disabled={isLoadingFFmpeg || isDownloading || isProcessing}
+                                />
+                            }
+                            label="倒放视频"
+                        />
+                        {isLoadingFFmpeg && (
+                            <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
+                                <CircularProgress size={16} sx={{ mr: 1 }} />
+                                <Typography variant="caption" color="text.secondary">
+                                    加载FFmpeg中...
+                                </Typography>
+                            </Box>
+                        )}
+                        {ffmpegError && (
+                            <Typography variant="caption" color="error" sx={{ mt: 1, display: 'block' }}>
+                                FFmpeg加载失败，倒放功能不可用
+                            </Typography>
+                        )}
+                    </Box>
 
                     <Box sx={{ width: '100%', mb: 2 }}>
                         {downloadProgress > 0 && downloadProgress < 100 && (
