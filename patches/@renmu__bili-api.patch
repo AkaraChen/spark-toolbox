@@ -1,0 +1,12 @@
+diff --git a/dist/video/index.js b/dist/video/index.js
+index 8ddc4eff3ae8896f3db4cad15026fcd04c97ed5a..7b24f8dfa39564379b022e2acc71c9756423cc27 100644
+--- a/dist/video/index.js
++++ b/dist/video/index.js
+@@ -181,6 +181,7 @@ export default class Video extends BaseRequest {
+         const url = `https://api.bilibili.com/x/web-interface/view`;
+         const data = {
+             aid: params.aid ?? this.aid,
++            bvid: params.bvid
+         };
+         return this.request.get(url, {
+             params: data,
