@@ -7,6 +7,7 @@ import SettingsIcon from '@mui/icons-material/Settings'
 import TranslateIcon from '@mui/icons-material/Translate'
 import HistoryIcon from '@mui/icons-material/History'
 import PasswordIcon from '@mui/icons-material/Password'
+import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import LinearProgress from '@mui/material/LinearProgress'
 import type { Branding, Navigation } from '@toolpad/core/AppProvider'
 
@@ -48,6 +49,11 @@ const NAVIGATION: Navigation = [
         segment: 'password-generator',
         title: '密码生成器',
         icon: <PasswordIcon />,
+    },
+    {
+        segment: 'bilibili',
+        title: 'Bilibili',
+        icon: <PlayCircleIcon />,
     },
     {
         segment: 'settings',
