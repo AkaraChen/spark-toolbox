@@ -28,10 +28,14 @@ export function AISettings() {
         setBaseModel,
         setSmallModel,
         resetSettings,
+        openai,
     } = useStore()
 
     const { showNotification } = useNotification()
     const [showApiKey, setShowApiKey] = useState(false)
+    
+    // 检查 API 设置是否有效
+    const isApiConfigValid = Boolean(openaiBase && openaiKey)
 
     const handleOpenAIBaseChange = (
         event: React.ChangeEvent<HTMLInputElement>,
@@ -70,13 +74,12 @@ export function AISettings() {
         <Stack spacing={3} sx={{ py: 3 }}>
             <TextField
                 label='OpenAI Base URL'
-                fullWidth
                 value={openaiBase}
                 onChange={handleOpenAIBaseChange}
-                placeholder='https://api.openai.com/v1'
-                helperText='OpenAI API 的基础 URL'
+                fullWidth
+                margin='normal'
+                required
             />
-
             <TextField
                 label='OpenAI API Key'
                 fullWidth
@@ -85,6 +88,7 @@ export function AISettings() {
                 onChange={handleOpenAIKeyChange}
                 placeholder='sk-...'
                 helperText='您的 OpenAI API 密钥'
+                required
                 slotProps={{
                     input: {
                         endAdornment: (
@@ -106,7 +110,7 @@ export function AISettings() {
                 }}
             />
 
-            <FormControl fullWidth>
+            <FormControl fullWidth disabled={!isApiConfigValid}>
                 <InputLabel id='large-model-label'>大型模型</InputLabel>
                 <Select
                     labelId='large-model-label'
@@ -120,7 +124,7 @@ export function AISettings() {
                 </Select>
             </FormControl>
 
-            <FormControl fullWidth>
+            <FormControl fullWidth disabled={!isApiConfigValid}>
                 <InputLabel id='base-model-label'>基础模型</InputLabel>
                 <Select
                     labelId='base-model-label'
@@ -136,13 +140,13 @@ export function AISettings() {
                 </Select>
             </FormControl>
 
-            <FormControl fullWidth>
+            <FormControl fullWidth disabled={!isApiConfigValid}>
                 <InputLabel id='small-model-label'>小型模型</InputLabel>
                 <Select
                     labelId='small-model-label'
                     value={smallModel}
                     label='小型模型'
-                    onChange={handleSmallModelChange as any}
+                    onChange={handleSmallModelChange}
                 >
                     <MenuItem value='gpt-4.1-nano'>GPT-4.1 Nano</MenuItem>
                     <MenuItem value='gpt-3.5-turbo-instruct'>
