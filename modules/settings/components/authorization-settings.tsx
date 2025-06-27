@@ -36,7 +36,7 @@ export function AuthorizationSettings() {
     }
 
     return (
-        <Stack spacing={3} sx={{ py: 3 }}>
+        <Stack spacing={3}>
             <Box>
                 <Typography variant='h6' gutterBottom>
                     GitHub 授权

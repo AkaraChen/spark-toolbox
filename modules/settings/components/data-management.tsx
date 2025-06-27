@@ -70,7 +70,7 @@ export function DataManagement() {
     }
 
     return (
-        <Stack spacing={2} sx={{ py: 3 }}>
+        <Stack spacing={2}>
             <Box>
                 <Button
                     variant='contained'

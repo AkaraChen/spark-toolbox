@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Paper } from '@mui/material'
+import { Box } from '@mui/material'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { getVideoSourceUrl } from '../api/client'
 import { VideoInfo } from '../api/types'
@@ -158,7 +158,7 @@ export function BilibiliControlPanel({
     }
 
     return (
-        <Paper sx={{ p: 3 }}>
+        <Box>
             {/* BV号输入组件 */}
             <BvidInput onVideoInfoFetched={handleVideoInfoFetched} />
 
@@ -198,6 +198,6 @@ export function BilibiliControlPanel({
                     />
                 </>
             )}
-        </Paper>
+        </Box>
     )
 }

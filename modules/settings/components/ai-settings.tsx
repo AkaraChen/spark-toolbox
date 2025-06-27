@@ -74,7 +74,7 @@ export function AISettings() {
     const { data: models } = useModels()
 
     return (
-        <Stack spacing={3} sx={{ py: 3 }}>
+        <Stack spacing={3}>
             <TextField
                 label='OpenAI Base URL'
                 value={openaiBase}

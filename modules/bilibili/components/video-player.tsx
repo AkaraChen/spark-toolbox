@@ -1,7 +1,7 @@
 'use client'
 
 import { useMemo, useRef, useEffect } from 'react'
-import { Box, Paper, Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 
 interface VideoPlayerProps {
     videoData: Uint8Array | null
@@ -43,7 +43,7 @@ export function BilibiliVideoPlayer({
     }, [videoUrl])
 
     return (
-        <Paper>
+        <Box>
             {videoData ? (
                 <Box sx={{ width: '100%' }}>
                     <video
@@ -65,6 +65,6 @@ export function BilibiliVideoPlayer({
                     请在左侧输入BV号并获取视频链接
                 </Typography>
             )}
-        </Paper>
+        </Box>
     )
 }
