@@ -97,6 +97,7 @@ export function PasswordGenerator() {
                 min={4}
                 max={32}
                 step={1}
+                sx={{ maxWidth: 600 }}
                 marks={[
                   { value: 4, label: '4' },
                   { value: 12, label: '12' },
