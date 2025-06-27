@@ -109,13 +109,7 @@ export const useStore = create<AppState>()(
                     }
                 },
             }),
-            {
-                name: STORAGE.STORE_NAME,
-                storage: createJSONStorage(() => localStorage),
-            },
+            { name: STORAGE.STORE_NAME },
         ),
     ),
 )
-
-// 使用正确的 selector 获取 OpenAI 客户端
-export const useOpenAI = () => useStore(state => state.openai)

@@ -7,7 +7,12 @@ import Alert from '@mui/material/Alert'
 import TextField from '@mui/material/TextField'
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
-import GLOBAL_STORE from '@/modules/universal/utils/kv-store'
+import RefreshIcon from '@mui/icons-material/Refresh'
+import {
+    createBackup,
+    restoreFromBackup,
+    downloadBackup,
+} from '@/modules/settings/utils/backup'
 import { useNotification } from '@/modules/universal/components/notification-provider'
 
 export function DataManagement() {
@@ -17,9 +22,9 @@ export function DataManagement() {
 
     const handleBackup = () => {
         try {
-            const backupJson = GLOBAL_STORE.backup()
+            const backupJson = createBackup()
             setBackupData(backupJson)
-            showNotification('备份数据已生成', 'success')
+            showNotification('完整备份数据已生成', 'success')
         } catch (error) {
             showNotification(
                 `备份失败: ${error instanceof Error ? error.message : '未知错误'}`,
@@ -30,17 +35,7 @@ export function DataManagement() {
 
     const handleDownloadBackup = () => {
         if (!backupData) return
-
-        const blob = new Blob([backupData], { type: 'application/json' })
-        const url = URL.createObjectURL(blob)
-        const a = document.createElement('a')
-        const timestamp = new Date().toISOString().replace(/[:.]/g, '-')
-        a.href = url
-        a.download = `spark-backup-${timestamp}.json`
-        document.body.appendChild(a)
-        a.click()
-        document.body.removeChild(a)
-        URL.revokeObjectURL(url)
+        downloadBackup(backupData)
     }
 
     const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,8 +54,16 @@ export function DataManagement() {
         if (!restoreData) return
 
         try {
-            GLOBAL_STORE.restore(restoreData)
-            showNotification('数据已成功恢复', 'success')
+            const result = restoreFromBackup(restoreData)
+            showNotification(
+                result.message,
+                result.success ? 'success' : 'error',
+            )
+
+            if (result.success) {
+                // Clear the restore data field after successful restore
+                setRestoreData('')
+            }
         } catch (error) {
             showNotification(
                 `恢复失败: ${error instanceof Error ? error.message : '无效的备份数据'}`,
@@ -137,8 +140,20 @@ export function DataManagement() {
                     placeholder='粘贴备份数据或上传备份文件'
                 />
                 <Alert severity='warning'>
-                    警告：恢复操作将覆盖当前所有数据，请确保您有正确的备份文件。
+                    警告：恢复操作将覆盖当前所有数据，包括KV存储和应用设置。恢复后需要刷新页面以应用所有设置。
                 </Alert>
+                <Box
+                    sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}
+                >
+                    <Button
+                        variant='outlined'
+                        color='primary'
+                        startIcon={<RefreshIcon />}
+                        onClick={() => window.location.reload()}
+                    >
+                        刷新页面
+                    </Button>
+                </Box>
             </Stack>
         </Stack>
     )

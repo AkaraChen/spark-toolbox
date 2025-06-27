@@ -121,13 +121,11 @@ export function AISettings() {
                     label='大型模型'
                     onChange={handleLargeModelChange}
                 >
-                    {
-                        models?.map(model => (
-                            <MenuItem key={model.id} value={model.id}>
-                                {model.id}
-                            </MenuItem>
-                        ))
-                    }
+                    {models?.map(model => (
+                        <MenuItem key={model.id} value={model.id}>
+                            {model.id}
+                        </MenuItem>
+                    ))}
                 </Select>
             </FormControl>
 
@@ -139,13 +137,11 @@ export function AISettings() {
                     label='基础模型'
                     onChange={handleBaseModelChange}
                 >
-                    {
-                        models?.map(model => (
-                            <MenuItem key={model.id} value={model.id}>
-                                {model.id}
-                            </MenuItem>
-                        ))
-                    }
+                    {models?.map(model => (
+                        <MenuItem key={model.id} value={model.id}>
+                            {model.id}
+                        </MenuItem>
+                    ))}
                 </Select>
             </FormControl>
 
@@ -157,13 +153,11 @@ export function AISettings() {
                     label='小型模型'
                     onChange={handleSmallModelChange}
                 >
-                    {
-                        models?.map(model => (
-                            <MenuItem key={model.id} value={model.id}>
-                                {model.id}
-                            </MenuItem>
-                        ))
-                    }
+                    {models?.map(model => (
+                        <MenuItem key={model.id} value={model.id}>
+                            {model.id}
+                        </MenuItem>
+                    ))}
                 </Select>
             </FormControl>
 
