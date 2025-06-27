@@ -8,7 +8,7 @@
  * @param url 需要下载的原始URL
  * @returns 代理URL
  */
-export function getProxyDownloadUrl(url: string): string {
+function getProxyDownloadUrl(url: string): string {
     // 确保URL被正确编码
     const encodedUrl = encodeURIComponent(url)
     return `/api/download?url=${encodedUrl}`

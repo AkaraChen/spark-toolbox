@@ -4,7 +4,7 @@ import { STORAGE } from '@/modules/universal/constants/store'
 /**
  * Interface for backup data structure
  */
-export interface BackupData {
+interface BackupData {
     data: Record<string, Record<string, any>>
     settings: Record<string, any>
     timestamp: string

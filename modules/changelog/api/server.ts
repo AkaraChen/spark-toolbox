@@ -13,9 +13,7 @@ import {
  * @param packageInfo Package information
  * @returns GitHub repository information or null if not found
  */
-export async function parseGitInfo(
-    packageInfo: PackageInfo,
-): Promise<GitInfo | null> {
+async function parseGitInfo(packageInfo: PackageInfo): Promise<GitInfo | null> {
     try {
         // Dynamic import for hosted-git-info which is a CommonJS module
         const hostedGitInfo = require('hosted-git-info')

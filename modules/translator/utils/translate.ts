@@ -4,7 +4,7 @@ import * as llm from './llm'
 /**
  * User preferences interface for translation
  */
-export interface UserPreferences {
+interface UserPreferences {
     primaryLanguage: string
     targetLanguage: string
     largeModel: string
@@ -14,7 +14,7 @@ export interface UserPreferences {
 /**
  * Parameters for translation operations
  */
-export interface TranslateParams {
+interface TranslateParams {
     text: string
     userPreferences: UserPreferences
     client: OpenAI

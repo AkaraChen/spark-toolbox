@@ -1,7 +1,7 @@
 import { DATA_STORE_PATH } from '@/modules/universal/constants/store'
 import { DataModel } from '@toolpad/core'
 
-export interface IKvStore {
+interface IKvStore {
     get: <T>(scope: string, key: string) => T | null
     getAll: <T>(scope: string) => Record<string, T>
     set: <T>(scope: string, key: string, value: T) => void
@@ -12,7 +12,7 @@ export interface IKvStore {
     restore: (data: string) => void
 }
 
-export class KvStore implements IKvStore {
+class KvStore implements IKvStore {
     constructor(private key: string) {}
     private read(): Record<string, Record<string, DataModel>> {
         const item = localStorage.getItem(this.key)

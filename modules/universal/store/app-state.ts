@@ -4,7 +4,7 @@ import { devtools } from 'zustand/middleware'
 import { OPENAI, STORAGE } from '@/modules/universal/constants/store'
 
 // App state interface
-export interface AppState {
+interface AppState {
     // OpenAI Base URL
     openaiBase: string
     setOpenaiBase: (url: string) => void

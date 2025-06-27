@@ -2,7 +2,7 @@ import { InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material'
 import FormControl from '@mui/material/FormControl'
 import { ReactNode, useId } from 'react'
 
-export interface ModelSelectorProps {
+interface ModelSelectorProps {
     models: string[]
     selectedModel: string
     onModelChange: (model: string) => void

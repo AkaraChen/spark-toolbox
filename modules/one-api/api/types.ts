@@ -4,7 +4,7 @@ export interface Status {
     success: boolean
 }
 
-export interface StatusData {
+interface StatusData {
     InviteRegisterEnabled: boolean
     InvoiceMinAmount: number
     QuotaForInvitee: number
@@ -79,15 +79,15 @@ export interface StatusData {
     wechat_qrcode: string
 }
 
-export interface StatusRechargeDiscount {}
+interface StatusRechargeDiscount {}
 
-export interface StatusChat {
+interface StatusChat {
     logo: string
     name: string
     url: string
 }
 
-export interface StatusHeaderNav {
+interface StatusHeaderNav {
     content: string
     displayType: string
     enabled: boolean
@@ -102,7 +102,7 @@ export interface User {
     success: boolean
 }
 
-export interface UserData {
+interface UserData {
     id: number
     username: string
     password: string

@@ -1,7 +1,7 @@
 import { DataModel } from '@toolpad/core'
 import GLOBAL_STORE from './kv-store'
 
-export interface IStore<D extends DataModel> {
+interface IStore<D extends DataModel> {
     get: (key: string) => D | null
     getAll: () => Record<string, D>
     set: (key: string, value: D) => void
