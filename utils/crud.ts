@@ -1,6 +1,6 @@
-import { LocalStorageStore } from "./local-storage"
-import { DataModel, DataModelId } from "@toolpad/core"
-import { nanoid } from "nanoid"
+import { LocalStorageStore } from './local-storage'
+import { DataModel, DataModelId } from '@toolpad/core'
+import { nanoid } from 'nanoid'
 
 export function createCrud<T extends DataModel>(store: LocalStorageStore<T>) {
     return {
@@ -14,11 +14,11 @@ export function createCrud<T extends DataModel>(store: LocalStorageStore<T>) {
         getOne(id: DataModelId) {
             const item = store.get(id.toString())
             if (!item) {
-                throw new Error("Item not found")
+                throw new Error('Item not found')
             }
             return item
         },
-        createOne(data: Omit<T, "id">) {
+        createOne(data: Omit<T, 'id'>) {
             const id = nanoid()
             const item = {
                 id,
