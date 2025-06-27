@@ -7,7 +7,6 @@ import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
 import { DataManagement } from '@/modules/settings/components/data-management'
 import { AISettings } from '@/modules/settings/components/ai-settings'
-import { NotificationProvider } from '@/modules/universal/components/notification-provider'
 import { TabPanel } from '@/modules/universal/components/tab-panel'
 import { PageContainer } from '@toolpad/core'
 
@@ -22,31 +21,29 @@ export default function SettingsPage() {
     }
 
     return (
-        <NotificationProvider>
-            <PageContainer>
-                <Box sx={{ width: '100%' }}>
-                    <Box
-                        sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}
+        <PageContainer>
+            <Box sx={{ width: '100%' }}>
+                <Box
+                    sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}
+                >
+                    <Tabs
+                        value={tabValue}
+                        onChange={handleTabChange}
+                        aria-label='设置选项卡'
                     >
-                        <Tabs
-                            value={tabValue}
-                            onChange={handleTabChange}
-                            aria-label='设置选项卡'
-                        >
-                            <Tab label='AI设置' />
-                            <Tab label='数据管理' />
-                        </Tabs>
-                    </Box>
-
-                    <TabPanel value={tabValue} index={0}>
-                        <AISettings />
-                    </TabPanel>
-
-                    <TabPanel value={tabValue} index={1}>
-                        <DataManagement />
-                    </TabPanel>
+                        <Tab label='AI设置' />
+                        <Tab label='数据管理' />
+                    </Tabs>
                 </Box>
-            </PageContainer>
-        </NotificationProvider>
+
+                <TabPanel value={tabValue} index={0}>
+                    <AISettings />
+                </TabPanel>
+
+                <TabPanel value={tabValue} index={1}>
+                    <DataManagement />
+                </TabPanel>
+            </Box>
+        </PageContainer>
     )
 }
