@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { persist, createJSONStorage } from 'zustand/middleware'
+import { persist } from 'zustand/middleware'
 import { devtools } from 'zustand/middleware'
 import { OpenAI } from 'openai'
 import { OPENAI, STORAGE } from '@/modules/universal/constants'
@@ -33,9 +33,6 @@ export interface AppState {
     smallModel: string
     setSmallModel: (model: string) => void
 
-    // OpenAI client
-    openai: OpenAI | null
-
     // Utility functions
     getModelByType: (type: 'large' | 'base' | 'small') => string
 
@@ -54,19 +51,16 @@ export const useStore = create<AppState>()(
                 largeModel: OPENAI.MODELS.LARGE,
                 baseModel: OPENAI.MODELS.BASE,
                 smallModel: OPENAI.MODELS.SMALL,
-                openai: null,
 
                 // Actions
                 setOpenaiBase: (url: string) =>
                     set(state => ({
                         openaiBase: url,
-                        openai: createOpenAIClient(url, state.openaiKey),
                     })),
 
                 setOpenaiKey: (key: string) =>
                     set(state => ({
                         openaiKey: key,
-                        openai: createOpenAIClient(state.openaiBase, key),
                     })),
 
                 setLargeModel: (model: string) =>
@@ -91,7 +85,6 @@ export const useStore = create<AppState>()(
                         largeModel: OPENAI.MODELS.LARGE,
                         baseModel: OPENAI.MODELS.BASE,
                         smallModel: OPENAI.MODELS.SMALL,
-                        openai: createOpenAIClient(OPENAI.DEFAULT_BASE_URL, ''),
                     }),
 
                 // Selector function inside the store
@@ -109,7 +102,9 @@ export const useStore = create<AppState>()(
                     }
                 },
             }),
-            { name: STORAGE.SETTING_STORE_NAME },
+            { 
+                name: STORAGE.SETTING_STORE_NAME,
+            },
         ),
     ),
 )
