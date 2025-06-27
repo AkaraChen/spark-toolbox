@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react'
 import {
     Box,
-    Button,
     Card,
     CardContent,
     Checkbox,
@@ -17,7 +16,7 @@ import {
 } from '@mui/material'
 import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 import RefreshIcon from '@mui/icons-material/Refresh'
-import { generatePassword, PasswordFlags } from '../utils'
+import { generatePassword, PasswordFlags } from '../utils/generate-password'
 import { useNotification } from '../../universal/hooks/use-notification'
 
 /**
