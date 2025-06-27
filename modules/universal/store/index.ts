@@ -23,6 +23,10 @@ export interface AppState {
     openaiKey: string
     setOpenaiKey: (key: string) => void
 
+    // GitHub Token
+    githubToken: string | null
+    setGithubToken: (token: string) => void
+
     // Model selections
     largeModel: string
     setLargeModel: (model: string) => void
@@ -45,6 +49,7 @@ export interface AppState {
 
     // Reset actions
     resetSettings: () => void
+    resetAuthSettings: () => void
 }
 
 // Create store with persistence
@@ -55,6 +60,7 @@ export const useStore = create<AppState>()(
                 // Initial state
                 openaiBase: OPENAI.DEFAULT_BASE_URL,
                 openaiKey: '',
+                githubToken: null,
                 largeModel: OPENAI.MODELS.LARGE,
                 baseModel: OPENAI.MODELS.BASE,
                 smallModel: OPENAI.MODELS.SMALL,
@@ -97,6 +103,11 @@ export const useStore = create<AppState>()(
                         targetLanguage: language,
                     }),
 
+                setGithubToken: (token: string) =>
+                    set({
+                        githubToken: token,
+                    }),
+
                 resetSettings: () =>
                     set({
                         openaiBase: OPENAI.DEFAULT_BASE_URL,
@@ -104,8 +115,11 @@ export const useStore = create<AppState>()(
                         largeModel: OPENAI.MODELS.LARGE,
                         baseModel: OPENAI.MODELS.BASE,
                         smallModel: OPENAI.MODELS.SMALL,
-                        primaryLanguage: 'English',
-                        targetLanguage: 'Chinese',
+                    }),
+
+                resetAuthSettings: () =>
+                    set({
+                        githubToken: null,
                     }),
 
                 // Selector function inside the store

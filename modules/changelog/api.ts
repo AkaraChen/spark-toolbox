@@ -63,7 +63,7 @@ export async function getChangelogInfo(
         
         // Initialize GitHub API client
         const octokit = new Octokit({
-            auth: githubToken,
+            auth: githubToken || undefined,
         })
         
         // Get repository contents

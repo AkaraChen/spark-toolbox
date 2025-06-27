@@ -2,6 +2,7 @@ import { useMutation } from '@tanstack/react-query'
 import { getChangelogInfo } from './api-client'
 import { ChangelogResult } from './types'
 import { useNotification } from '../universal/hooks/use-notification'
+import { useStore } from '@/modules/universal/store'
 
 /**
  * Hook for fetching changelog information for a package
@@ -9,6 +10,7 @@ import { useNotification } from '../universal/hooks/use-notification'
  */
 export function useChangelogInfo() {
     const { showError } = useNotification()
+    const { githubToken } = useStore()
     
     return useMutation<ChangelogResult, Error, string>({
         mutationFn: (packageName: string) => {
@@ -16,7 +18,7 @@ export function useChangelogInfo() {
                 showError('Please enter a package name')
                 return Promise.reject(new Error('Please enter a package name'))
             }
-            return getChangelogInfo(packageName)
+            return getChangelogInfo(packageName, githubToken || undefined)
         },
         onError: (error) => {
             showError(error instanceof Error ? error.message : 'Failed to fetch changelog information')
