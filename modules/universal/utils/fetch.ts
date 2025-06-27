@@ -15,19 +15,23 @@ function createMethodClient(
     baseURL: string | undefined,
     method: (typeof methods)[number],
 ) {
-    return <T>(url: string, { token, data, body, ...init }: Options) => {
+    return async <T>(url: string, { token, data, body, ...init }: Options) => {
         const headers = Object.assign(
             {},
             init.headers,
             token && { Authorization: `Bearer ${token}` },
         )
 
-        return fetch(new URL(url, baseURL), {
+        const res = await fetch(new URL(url, baseURL), {
             ...init,
             method,
             headers,
             body: data ? JSON.stringify(data) : body,
-        }).then(res => res.json()) as Promise<T>
+        })
+        if (!res.ok) {
+            throw new Error(`HTTP error status: ${res.status}`)
+        }
+        return await res.json() as Promise<T>
     }
 }
 

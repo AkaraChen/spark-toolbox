@@ -3,16 +3,17 @@ import { getChangelogInfo } from '@/modules/changelog/api'
 import { z } from 'zod'
 import { ChangelogResult } from '@/modules/changelog/types'
 
-export async function POST(request: NextRequest) {
+export async function POST(request: NextRequest, { params }: { params: { name: string } }) {
     const schema = z.object({
-        packageName: z.string(),
         githubToken: z.string().optional(),
     })
+
+    const { name } = params
     
     try {
-        const { packageName, githubToken } = schema.parse(await request.json())
+        const { githubToken } = schema.parse(await request.json())
         const result = (await getChangelogInfo(
-            packageName,
+            name,
             githubToken,
         )) satisfies ChangelogResult
         
