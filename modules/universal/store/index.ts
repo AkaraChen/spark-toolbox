@@ -1,0 +1,111 @@
+import { create } from 'zustand'
+import { persist, createJSONStorage } from 'zustand/middleware'
+import { devtools } from 'zustand/middleware'
+import { OpenAI } from 'openai'
+import { OPENAI, STORAGE } from '@/modules/universal/constants'
+
+// Create a new OpenAI client with the given base URL and API key
+function createOpenAIClient(baseURL: string, apiKey: string): OpenAI {
+  return new OpenAI({
+    baseURL,
+    apiKey,
+    dangerouslyAllowBrowser: true // Allow usage in browser environment
+  })
+}
+
+// App state interface
+export interface AppState {
+  // OpenAI Base URL
+  openaiBase: string
+  setOpenaiBase: (url: string) => void
+  
+  // OpenAI API Key
+  openaiKey: string
+  setOpenaiKey: (key: string) => void
+  
+  // Model selections
+  largeModel: string
+  setLargeModel: (model: string) => void
+  
+  baseModel: string
+  setBaseModel: (model: string) => void
+  
+  smallModel: string
+  setSmallModel: (model: string) => void
+  
+  // OpenAI client
+  openai: OpenAI | null
+  
+  // Utility functions
+  getModelByType: (type: 'large' | 'base' | 'small') => string
+  
+  // Reset actions
+  resetSettings: () => void
+}
+
+// Create store with persistence
+export const useStore = create<AppState>()(  
+  devtools(
+    persist(
+      (set, get) => ({
+        // Initial state
+        openaiBase: OPENAI.DEFAULT_BASE_URL,
+        openaiKey: '',
+        largeModel: OPENAI.MODELS.LARGE,
+        baseModel: OPENAI.MODELS.BASE,
+        smallModel: OPENAI.MODELS.SMALL,
+        openai: null,
+
+        // Actions
+        setOpenaiBase: (url: string) => set((state) => ({
+          openaiBase: url,
+          openai: createOpenAIClient(url, state.openaiKey)
+        })),
+
+        setOpenaiKey: (key: string) => set((state) => ({
+          openaiKey: key,
+          openai: createOpenAIClient(state.openaiBase, key)
+        })),
+
+        setLargeModel: (model: string) => set({
+          largeModel: model
+        }),
+
+        setBaseModel: (model: string) => set({
+          baseModel: model
+        }),
+
+        setSmallModel: (model: string) => set({
+          smallModel: model
+        }),
+
+        resetSettings: () => set({
+          openaiBase: OPENAI.DEFAULT_BASE_URL,
+          openaiKey: '',
+          largeModel: OPENAI.MODELS.LARGE,
+          baseModel: OPENAI.MODELS.BASE,
+          smallModel: OPENAI.MODELS.SMALL,
+          openai: createOpenAIClient(OPENAI.DEFAULT_BASE_URL, '')
+        }),
+        
+        // Selector function inside the store
+        getModelByType: (type) => {
+          const state = get()
+          switch (type) {
+            case 'large': return state.largeModel
+            case 'base': return state.baseModel
+            case 'small': return state.smallModel
+            default: return state.baseModel
+          }
+        }
+      }),
+      {
+        name: STORAGE.STORE_NAME,
+        storage: createJSONStorage(() => localStorage)
+      }
+    )
+  )
+)
+
+// 使用正确的 selector 获取 OpenAI 客户端
+export const useOpenAI = () => useStore(state => state.openai)

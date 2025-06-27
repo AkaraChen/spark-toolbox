@@ -1,5 +1,5 @@
 import type { Quota } from '@/app/one-api/quota/route'
-import { createClient } from '@/utils/fetch'
+import { createClient } from '@/modules/universal/utils/fetch'
 
 export const getProviderQuota = async (
     baseURL: string,

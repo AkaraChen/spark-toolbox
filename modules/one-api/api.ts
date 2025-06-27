@@ -1,5 +1,5 @@
 import type { Status, User } from './types'
-import { createClient } from '@/utils/fetch'
+import { createClient } from '@/modules/universal/utils/fetch'
 
 export async function getProviderQuota(
     baseURL: string,

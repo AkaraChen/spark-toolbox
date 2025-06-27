@@ -9,8 +9,8 @@ import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
 import { DataManagement } from '@/modules/settings/components/data-management'
 import { AISettings } from '@/modules/settings/components/ai-settings'
-import { NotificationProvider } from '@/modules/universal/notification-provider'
-import { a11yProps, TabPanel } from '@/modules/universal/tab-panel'
+import { NotificationProvider } from '@/modules/universal/components/notification-provider'
+import { a11yProps, TabPanel } from '@/modules/universal/components/tab-panel'
 import { PageContainer } from '@toolpad/core'
 
 export default function SettingsPage() {

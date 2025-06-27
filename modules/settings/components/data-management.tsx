@@ -10,8 +10,8 @@ import TextField from '@mui/material/TextField'
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import Divider from '@mui/material/Divider'
-import GLOBAL_STORE from '@/utils/kv-store'
-import { useNotification } from '@/modules/universal/notification-provider'
+import GLOBAL_STORE from '@/modules/universal/utils/kv-store'
+import { useNotification } from '@/modules/universal/components/notification-provider'
 
 export function DataManagement() {
     const [backupData, setBackupData] = useState<string>('')

@@ -6,8 +6,8 @@ import Paper from '@mui/material/Paper'
 import Stack from '@mui/material/Stack'
 import Alert from '@mui/material/Alert'
 import Divider from '@mui/material/Divider'
-import { useAppStore } from '@/store'
-import { useNotification } from '@/modules/universal/notification-provider'
+import { useAppStore } from '@/modules/universal/store'
+import { useNotification } from '@/modules/universal/components/notification-provider'
 
 export function SystemSettings() {
     const { resetAllSettings, resetAISettings } = useAppStore()

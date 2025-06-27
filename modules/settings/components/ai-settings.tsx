@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { useState } from 'react'
-import { useAtom, useSetAtom } from 'jotai'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
@@ -16,43 +15,50 @@ import IconButton from '@mui/material/IconButton'
 import Divider from '@mui/material/Divider'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
-import { aiSettingsAtom, resetAISettingsAtom, updateAISettingsAtom } from '@/atoms/ai-settings'
-import { useNotification } from '@/modules/universal/notification-provider'
+import { useStore } from '@/modules/universal/store'
+import { useNotification } from '@/modules/universal/components/notification-provider'
 
 export function AISettings() {
-    const [aiSettings, setAiSettings] = useAtom(aiSettingsAtom)
-    const resetAISettings = useSetAtom(resetAISettingsAtom)
-    const updateAISettings = useSetAtom(updateAISettingsAtom)
+    const { 
+        openaiBase, 
+        openaiKey, 
+        largeModel, 
+        baseModel, 
+        smallModel,
+        setOpenaiBase,
+        setOpenaiKey,
+        setLargeModel,
+        setBaseModel,
+        setSmallModel,
+        resetSettings
+    } = useStore()
+    
     const { showNotification } = useNotification()
     const [showApiKey, setShowApiKey] = useState(false)
     
     const handleOpenAIBaseChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        updateAISettings({ openaiBase: event.target.value })
+        setOpenaiBase(event.target.value)
     }
     
     const handleOpenAIKeyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        updateAISettings({ openaiKey: event.target.value })
+        setOpenaiKey(event.target.value)
     }
     
     const handleLargeModelChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-        updateAISettings({ largeModel: event.target.value as string })
+        setLargeModel(event.target.value as string)
     }
     
     const handleBaseModelChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-        updateAISettings({ baseModel: event.target.value as string })
+        setBaseModel(event.target.value as string)
     }
     
     const handleSmallModelChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-        updateAISettings({ smallModel: event.target.value as string })
+        setSmallModel(event.target.value as string)
     }
     
-    const handleResetAISettings = () => {
-        resetAISettings()
+    const handleResetSettings = () => {
+        resetSettings()
         showNotification('AI 设置已重置', 'info')
-    }
-    
-    const handleSaveSettings = () => {
-        showNotification('AI 设置已保存', 'success')
     }
     
     const toggleShowApiKey = () => {
@@ -65,11 +71,12 @@ export function AISettings() {
                 AI 设置
             </Typography>
             <Divider sx={{ mb: 2 }} />
+            
             <Stack spacing={3}>
                 <TextField
                     label="OpenAI Base URL"
                     fullWidth
-                    value={aiSettings.openaiBase}
+                    value={openaiBase}
                     onChange={handleOpenAIBaseChange}
                     placeholder="https://api.openai.com/v1"
                     helperText="OpenAI API 的基础 URL"
@@ -79,7 +86,7 @@ export function AISettings() {
                     label="OpenAI API Key"
                     fullWidth
                     type={showApiKey ? 'text' : 'password'}
-                    value={aiSettings.openaiKey}
+                    value={openaiKey}
                     onChange={handleOpenAIKeyChange}
                     placeholder="sk-..."
                     helperText="您的 OpenAI API 密钥"
@@ -102,7 +109,7 @@ export function AISettings() {
                     <InputLabel id="large-model-label">大型模型</InputLabel>
                     <Select
                         labelId="large-model-label"
-                        value={aiSettings.largeModel}
+                        value={largeModel}
                         label="大型模型"
                         onChange={handleLargeModelChange as any}
                     >
@@ -116,7 +123,7 @@ export function AISettings() {
                     <InputLabel id="base-model-label">基础模型</InputLabel>
                     <Select
                         labelId="base-model-label"
-                        value={aiSettings.baseModel}
+                        value={baseModel}
                         label="基础模型"
                         onChange={handleBaseModelChange as any}
                     >
@@ -130,7 +137,7 @@ export function AISettings() {
                     <InputLabel id="small-model-label">小型模型</InputLabel>
                     <Select
                         labelId="small-model-label"
-                        value={aiSettings.smallModel}
+                        value={smallModel}
                         label="小型模型"
                         onChange={handleSmallModelChange as any}
                     >
@@ -140,21 +147,13 @@ export function AISettings() {
                     </Select>
                 </FormControl>
                 
-                <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between' }}>
-                    <Button 
-                        variant='outlined'
-                        color='error'
-                        onClick={handleResetAISettings}
-                    >
-                        重置 AI 设置
-                    </Button>
-                    
+                <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
                     <Button 
                         variant='contained' 
                         color='primary'
-                        onClick={handleSaveSettings}
+                        onClick={handleResetSettings}
                     >
-                        保存设置
+                        重置设置
                     </Button>
                 </Box>
             </Stack>

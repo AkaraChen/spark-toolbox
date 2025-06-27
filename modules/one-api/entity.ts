@@ -1,8 +1,8 @@
-import { Entity } from '@/types/entity'
-import { LocalStorageStore } from '@/utils/local-storage'
+import { Entity } from '@/modules/universal/types/entity'
+import { LocalStorageStore } from '@/modules/universal/utils/local-storage'
 import { DataModel, DataSourceCache } from '@toolpad/core'
 import { z } from 'zod'
-import { createCrud } from '@/utils/crud'
+import { createCrud } from '@/modules/universal/utils/crud'
 import { QuotaColumn, URLColumn } from './components'
 
 export interface OneApiProvider extends DataModel {
