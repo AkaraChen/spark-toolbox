@@ -11,6 +11,8 @@
     "dependencies": {
         "@emotion/react": "^11",
         "@emotion/styled": "^11",
+        "@ffmpeg/ffmpeg": "^0.12.15",
+        "@ffmpeg/util": "^0.12.2",
         "@mui/icons-material": "^7",
         "@mui/material": "^7",
         "@mui/material-nextjs": "^7",
