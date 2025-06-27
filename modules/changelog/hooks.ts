@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query'
 import { getChangelogInfo } from './api-client'
 import { ChangelogResult } from './types'
 import { useNotification } from '../universal/hooks/use-notification'
-import { useStore } from '@/modules/universal/store'
+import { useStore } from '@/modules/universal/store/app-state'
 
 /**
  * Hook for fetching changelog information for a package

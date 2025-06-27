@@ -1,4 +1,4 @@
-import { DATA_STORE_PATH } from '@/modules/universal/constants'
+import { DATA_STORE_PATH } from '@/modules/universal/constants/store'
 import { DataModel } from '@toolpad/core'
 
 export interface IKvStore {

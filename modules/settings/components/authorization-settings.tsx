@@ -12,7 +12,7 @@ import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import Typography from '@mui/material/Typography'
 import Link from '@mui/material/Link'
-import { useStore } from '@/modules/universal/store'
+import { useStore } from '@/modules/universal/store/app-state'
 import { useNotification } from '@/modules/universal/components/notification-provider'
 
 export function AuthorizationSettings() {

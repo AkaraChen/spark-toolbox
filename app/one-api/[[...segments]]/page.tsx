@@ -2,7 +2,10 @@
 
 import * as React from 'react'
 import { Crud } from '@toolpad/core'
-import { OneApiProvider, oneApiProviderEntity } from '@/modules/one-api/entity'
+import {
+    OneApiProvider,
+    oneApiProviderEntity,
+} from '@/modules/one-api/entities'
 
 export default function OneApiPage() {
     return (

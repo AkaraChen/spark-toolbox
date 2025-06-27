@@ -1,17 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { devtools } from 'zustand/middleware'
-import { OpenAI } from 'openai'
-import { OPENAI, STORAGE } from '@/modules/universal/constants'
-
-// Create a new OpenAI client with the given base URL and API key
-function createOpenAIClient(baseURL: string, apiKey: string): OpenAI {
-    return new OpenAI({
-        baseURL,
-        apiKey,
-        dangerouslyAllowBrowser: true, // Allow usage in browser environment
-    })
-}
+import { OPENAI, STORAGE } from '@/modules/universal/constants/store'
 
 // App state interface
 export interface AppState {

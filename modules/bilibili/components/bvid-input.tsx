@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import { Box, Button, CircularProgress, TextField } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
 import { getVideoInfo } from '../api-client'
-import { VideoInfo } from '../type'
+import { VideoInfo } from '../types'
 import { useQueryState } from 'nuqs'
 
 interface BvidInputProps {

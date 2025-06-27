@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { useStore } from '../universal/store'
+import { useStore } from '../universal/store/app-state'
 import { useMemo } from 'react'
 import OpenAI from 'openai'
 

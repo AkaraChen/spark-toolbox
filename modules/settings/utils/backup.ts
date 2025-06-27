@@ -1,5 +1,5 @@
 import GLOBAL_STORE from '@/modules/universal/utils/kv-store'
-import { STORAGE } from '@/modules/universal/constants'
+import { STORAGE } from '@/modules/universal/constants/store'
 
 /**
  * Interface for backup data structure

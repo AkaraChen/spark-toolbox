@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { useStore } from '@/modules/universal/store'
+import { useStore } from '@/modules/universal/store/app-state'
 import { detectLanguage, translate, TranslateParams } from './utils/translate'
 import { auto, Lang } from './utils/lang'
 import { useOpenAI } from '@/modules/ai/hooks'

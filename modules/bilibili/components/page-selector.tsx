@@ -7,7 +7,7 @@ import {
     Select,
     SelectChangeEvent,
 } from '@mui/material'
-import { VideoInfo } from '../type'
+import { VideoInfo } from '../types'
 
 interface PageSelectorProps {
     videoInfo: VideoInfo
@@ -36,7 +36,7 @@ export function PageSelector({
                 label='选择分P'
                 onChange={handleChange}
             >
-                {videoInfo.pages.map(page => (
+                {videoInfo.pages.map((page: { cid: number; name: string }) => (
                     <MenuItem key={page.cid} value={page.cid}>
                         {page.name}
                     </MenuItem>

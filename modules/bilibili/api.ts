@@ -1,5 +1,5 @@
 import { Client } from '@renmu/bili-api'
-import { VideoInfo, VideoSource } from './type'
+import { VideoInfo, VideoSource } from './types'
 
 const client = new Client()
 

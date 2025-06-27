@@ -1,4 +1,4 @@
-import { Entity } from '@/modules/universal/types/entity'
+import { Entity } from '@/modules/universal/types/entities'
 import { LocalStorageStore } from '@/modules/universal/utils/local-storage'
 import { DataModel, DataSourceCache } from '@toolpad/core'
 import { z } from 'zod'

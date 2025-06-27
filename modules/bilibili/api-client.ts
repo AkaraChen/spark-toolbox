@@ -1,4 +1,4 @@
-import type { VideoInfo, VideoSource } from './type'
+import type { VideoInfo, VideoSource } from './types'
 import { createClient } from '@/modules/universal/utils/fetch'
 
 /**

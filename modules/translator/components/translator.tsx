@@ -17,7 +17,7 @@ import LockOpenIcon from '@mui/icons-material/LockOpen'
 import { useDebounce } from '../../universal/hooks/use-debounce'
 import { auto, Lang } from '../utils/lang'
 import { useDetectLang, useTranslate } from '../hooks'
-import { useStore } from '@/modules/universal/store'
+import { useStore } from '@/modules/universal/store/app-state'
 import { useNotification } from '../../universal/hooks/use-notification'
 import { LanguageSelector } from './language-selector'
 
