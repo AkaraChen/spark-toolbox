@@ -22,6 +22,7 @@ import { getVideoInfo, getVideoSourceUrl } from '../api-client'
 import { VideoInfo } from '../type'
 import { useFFmpeg } from '../hooks/use-ffmpeg'
 import { reverseVideo } from '../utils/reverse-video'
+import { downloadWithProgress } from '@ffmpeg/util'
 
 interface ControlPanelProps {
     onVideoDataFetched: (data: Uint8Array, mimeType: string) => void
@@ -88,55 +89,31 @@ export function BilibiliControlPanel({ onVideoDataFetched }: ControlPanelProps) 
             
             const videoUrl = sources[0]
             
-            // 使用fetch下载视频数据
-            const response = await fetch(videoUrl)
+            // 使用downloadWithProgress下载视频数据
+            let mimeType = 'video/mp4' // 默认MIME类型
             
-            if (!response.ok) {
-                throw new Error(`Failed to fetch video: ${response.status}`)
-            }
+            // 使用downloadWithProgress函数下载视频并跟踪进度
+            const videoData = await downloadWithProgress(videoUrl, (progress) => {
+                // 更新下载进度
+                setDownloadProgress(Math.round(progress.received / progress.total * 100))
+            })
             
-            // 获取文件大小
-            const contentLength = response.headers.get('content-length')
-            const totalBytes = contentLength ? parseInt(contentLength, 10) : 0
+            // 转换为Uint8Array
+            const allChunks = new Uint8Array(videoData)
             
-            // 创建Reader和Response流
-            const reader = response.body?.getReader()
-            if (!reader) {
-                throw new Error('Failed to create reader')
-            }
-            
-            // 读取数据块
-            let receivedBytes = 0
-            const chunks: Uint8Array[] = []
-            
-            while (true) {
-                const { done, value } = await reader.read()
-                
-                if (done) {
-                    break
+            // 尝试获取MIME类型（通过单独的HEAD请求）
+            try {
+                const headResponse = await fetch(videoUrl, { method: 'HEAD' })
+                if (headResponse.ok) {
+                    const contentType = headResponse.headers.get('content-type')
+                    if (contentType) {
+                        mimeType = contentType
+                    }
                 }
-                
-                chunks.push(value)
-                receivedBytes += value.length
-                
-                // 更新进度
-                if (totalBytes) {
-                    const progress = Math.min((receivedBytes / totalBytes) * 100, 100)
-                    setDownloadProgress(progress)
-                }
+            } catch (error) {
+                console.warn('Failed to get content type, using default:', error)
+                // 继续使用默认MIME类型
             }
-            
-            // 合并所有数据块
-            const allChunks = new Uint8Array(receivedBytes)
-            let position = 0
-            
-            for (const chunk of chunks) {
-                allChunks.set(chunk, position)
-                position += chunk.length
-            }
-            
-            // 获取MIME类型
-            const mimeType = response.headers.get('content-type') || 'video/mp4'
             
             // 如果启用了倒放功能且FFmpeg已加载，则处理倒放
             if (reverseEnabled && ffmpeg) {
