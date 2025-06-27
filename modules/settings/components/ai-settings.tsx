@@ -6,7 +6,7 @@ import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import FormControl from '@mui/material/FormControl'
 import InputLabel from '@mui/material/InputLabel'
-import Select from '@mui/material/Select'
+import Select, { SelectChangeEvent } from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
 import InputAdornment from '@mui/material/InputAdornment'
 import IconButton from '@mui/material/IconButton'
@@ -45,22 +45,16 @@ export function AISettings() {
         setOpenaiKey(event.target.value)
     }
 
-    const handleLargeModelChange = (
-        event: React.ChangeEvent<{ value: unknown }>,
-    ) => {
-        setLargeModel(event.target.value as string)
+    const handleLargeModelChange = (event: SelectChangeEvent) => {
+        setLargeModel(event.target.value)
     }
 
-    const handleBaseModelChange = (
-        event: React.ChangeEvent<{ value: unknown }>,
-    ) => {
-        setBaseModel(event.target.value as string)
+    const handleBaseModelChange = (event: SelectChangeEvent) => {
+        setBaseModel(event.target.value)
     }
 
-    const handleSmallModelChange = (
-        event: React.ChangeEvent<{ value: unknown }>,
-    ) => {
-        setSmallModel(event.target.value as string)
+    const handleSmallModelChange = (event: SelectChangeEvent) => {
+        setSmallModel(event.target.value)
     }
 
     const handleResetSettings = () => {
@@ -118,7 +112,7 @@ export function AISettings() {
                     labelId='large-model-label'
                     value={largeModel}
                     label='大型模型'
-                    onChange={handleLargeModelChange as any}
+                    onChange={handleLargeModelChange}
                 >
                     <MenuItem value='gpt-4.1'>GPT-4.1</MenuItem>
                     <MenuItem value='gpt-4-turbo'>GPT-4 Turbo</MenuItem>
@@ -132,7 +126,7 @@ export function AISettings() {
                     labelId='base-model-label'
                     value={baseModel}
                     label='基础模型'
-                    onChange={handleBaseModelChange as any}
+                    onChange={handleBaseModelChange}
                 >
                     <MenuItem value='gpt-4.1-mini'>GPT-4.1 Mini</MenuItem>
                     <MenuItem value='gpt-3.5-turbo'>GPT-3.5 Turbo</MenuItem>
