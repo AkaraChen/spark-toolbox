@@ -3,6 +3,7 @@ import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import { RealTimeClock } from '@/modules/dashboard/components/real-time-clock'
+import { BingImageCard } from '@/modules/dashboard/components/bing-image-card'
 
 export default function DashboardPage() {
     return (
@@ -11,9 +12,12 @@ export default function DashboardPage() {
                 Welcome Back!
             </Typography>
             <Grid container spacing={3}>
-                <Box sx={{ xs: 12, sm: 6, md: 4 }}>
+                <Grid item xs={12} sm={6} md={4}>
                     <RealTimeClock />
-                </Box>
+                </Grid>
+                <Grid item xs={12} sm={6} md={8}>
+                    <BingImageCard />
+                </Grid>
                 {/* You can add more cards here in the future */}
             </Grid>
         </Box>

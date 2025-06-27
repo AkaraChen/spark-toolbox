@@ -56,7 +56,6 @@ export const useStore = create<AppState>()(
                 smallModel: OPENAI.MODELS.SMALL,
                 primaryLanguage: 'English',
                 targetLanguage: 'Chinese',
-
                 // Actions
                 setOpenaiBase: (url: string) =>
                     set(state => ({

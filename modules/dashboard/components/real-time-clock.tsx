@@ -20,7 +20,7 @@ export function RealTimeClock() {
     }, [])
 
     return (
-        <Card>
+        <Card sx={{ height: '100%' }}>
             <CardContent sx={{ textAlign: 'center' }}>
                 <Typography variant="h4" component="div">
                     {time.toLocaleTimeString('en-US', { hour12: false })}
