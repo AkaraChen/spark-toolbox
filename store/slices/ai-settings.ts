@@ -3,7 +3,11 @@ import { AppState } from '../types'
 
 // AI settings interface
 export interface AISettings {
-  // Empty interface to be filled later
+  openaiBase: string
+  openaiKey: string
+  largeModel: string
+  baseModel: string
+  smallModel: string
 }
 
 // AI settings slice
@@ -14,7 +18,13 @@ export interface AISettingsSlice {
 }
 
 // Default AI settings
-const DEFAULT_AI_SETTINGS: AISettings = {}
+const DEFAULT_AI_SETTINGS: AISettings = {
+  openaiBase: 'https://api.openai.com/v1',
+  openaiKey: '',
+  largeModel: 'gpt-4.1',
+  baseModel: 'gpt-4.1-mini',
+  smallModel: 'gpt-4.1-nano'
+}
 
 // Create AI settings slice
 export const createAISettingsSlice: StateCreator<

@@ -14,9 +14,15 @@ export const useAppStore = create<AppState>()(
         
         // Global actions
         resetAllSettings: () => 
-          a[0]((state) => ({
-            // Reset all slices
-            ai: {}
+          a[0](() => ({
+            // Reset all slices with proper default values
+            ai: {
+              openaiBase: 'https://api.openai.com/v1',
+              openaiKey: '',
+              largeModel: 'gpt-4',
+              baseModel: 'gpt-3.5-turbo',
+              smallModel: 'gpt-3.5-turbo-instruct'
+            }
           }))
       }),
       {

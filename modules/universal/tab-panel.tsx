@@ -16,7 +16,6 @@ export function TabPanel(props: TabPanelProps) {
             hidden={value !== index}
             id={`settings-tabpanel-${index}`}
             aria-labelledby={`settings-tab-${index}`}
-            sx={{ pt: 3 }}
             {...other}
         >
             {value === index && children}

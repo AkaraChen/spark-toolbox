@@ -2,14 +2,16 @@
 
 import * as React from 'react'
 import { useState } from 'react'
-import { PageContainer } from '@toolpad/core/PageContainer'
+import Container from '@mui/material/Container'
+import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
 import { DataManagement } from '@/modules/settings/components/data-management'
-import { SystemSettings } from '@/modules/settings/components/system-settings'
+import { AISettings } from '@/modules/settings/components/ai-settings'
 import { NotificationProvider } from '@/modules/universal/notification-provider'
 import { a11yProps, TabPanel } from '@/modules/universal/tab-panel'
+import { PageContainer } from '@toolpad/core'
 
 export default function SettingsPage() {
     const [tabValue, setTabValue] = useState(0)
@@ -40,7 +42,7 @@ export default function SettingsPage() {
                     </Box>
                     
                     <TabPanel value={tabValue} index={0}>
-                        <SystemSettings />
+                        <AISettings />
                     </TabPanel>
                     
                     <TabPanel value={tabValue} index={1}>
