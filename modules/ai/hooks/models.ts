@@ -1,18 +1,6 @@
+import { useStore } from '@/modules/universal/store/app-state'
 import { useQuery } from '@tanstack/react-query'
-import { useStore } from '../universal/store/app-state'
-import { useMemo } from 'react'
-import OpenAI from 'openai'
-
-export const useOpenAI = () => {
-    const { openaiBase, openaiKey } = useStore()
-    return useMemo(() => {
-        return new OpenAI({
-            baseURL: openaiBase,
-            apiKey: openaiKey,
-            dangerouslyAllowBrowser: true,
-        })
-    }, [openaiBase, openaiKey])
-}
+import { useOpenAI } from './openai'
 
 export const useModels = () => {
     const { openaiBase, openaiKey } = useStore()

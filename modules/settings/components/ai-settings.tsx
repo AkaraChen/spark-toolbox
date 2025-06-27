@@ -14,7 +14,7 @@ import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import { useStore } from '@/modules/universal/store/app-state'
 import { useNotification } from '@/modules/universal/components/notification-provider'
-import { useModels } from '@/modules/ai/hooks'
+import { useModels } from '@/modules/ai/hooks/models'
 import { ModelSelector } from './model-selector'
 
 export function AISettings() {
