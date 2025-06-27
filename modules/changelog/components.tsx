@@ -11,6 +11,7 @@ import {
     TableBody,
     TableCell,
     TableContainer,
+    TableHead,
     TableRow,
     TextField,
 } from '@mui/material'
@@ -34,7 +35,7 @@ export function ChangelogFinder() {
 
     return (
         <>
-            <Box sx={{ display: 'flex', mb: 2 }}>
+            <Box sx={{ display: 'flex', mb: 2, gap: 1 }}>
                 <TextField
                     value={packageName}
                     onChange={(e) => setPackageName(e.target.value)}
@@ -56,6 +57,12 @@ export function ChangelogFinder() {
                 <Paper>
                     <TableContainer>
                         <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Type</TableCell>
+                                    <TableCell>URL</TableCell>
+                                </TableRow>
+                            </TableHead>
                             <TableBody>
                                 <TableRow>
                                     <TableCell>NPM</TableCell>
