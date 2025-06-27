@@ -27,41 +27,8 @@ function TabPanel(props: TabPanelProps) {
             aria-labelledby={`settings-tab-${index}`}
             {...other}
         >
-            {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+            {value === index && <Box sx={{ pt: 1 }}>{children}</Box>}
         </div>
-    )
-}
-
-export default function SettingsPage() {
-    const [value, setValue] = useState(0)
-
-    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-        setValue(newValue)
-    }
-
-    return (
-        <Paper sx={{ m: 3, flexGrow: 1 }}>
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                <Tabs
-                    value={value}
-                    onChange={handleChange}
-                    aria-label='settings tabs'
-                >
-                    <Tab label='AI' id='settings-tab-0' />
-                    <Tab label='Authorization' id='settings-tab-1' />
-                    <Tab label='Data Management' id='settings-tab-2' />
-                </Tabs>
-            </Box>
-            <TabPanel value={value} index={0}>
-                <AISettings />
-            </TabPanel>
-            <TabPanel value={value} index={1}>
-                <AuthorizationSettings />
-            </TabPanel>
-            <TabPanel value={value} index={2}>
-                <DataManagement />
-            </TabPanel>
-        </Paper>
     )
 }
 
@@ -76,32 +43,30 @@ export default function SettingsPage() {
     }
 
     return (
-        <PageContainer>
-            <Box sx={{ width: '100%' }}>
-                <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}>
-                    <Tabs
-                        value={tabValue}
-                        onChange={handleTabChange}
-                        aria-label='设置选项卡'
-                    >
-                        <Tab label='AI设置' />
-                        <Tab label='授权设置' />
-                        <Tab label='数据管理' />
-                    </Tabs>
-                </Box>
-
-                <TabPanel value={tabValue} index={0}>
-                    <AISettings />
-                </TabPanel>
-
-                <TabPanel value={tabValue} index={1}>
-                    <AuthorizationSettings />
-                </TabPanel>
-
-                <TabPanel value={tabValue} index={2}>
-                    <DataManagement />
-                </TabPanel>
+        <Box sx={{ width: '100%' }}>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}>
+                <Tabs
+                    value={tabValue}
+                    onChange={handleTabChange}
+                    aria-label='设置选项卡'
+                >
+                    <Tab label='AI设置' />
+                    <Tab label='授权设置' />
+                    <Tab label='数据管理' />
+                </Tabs>
             </Box>
-        </PageContainer>
+
+            <TabPanel value={tabValue} index={0}>
+                <AISettings />
+            </TabPanel>
+
+            <TabPanel value={tabValue} index={1}>
+                <AuthorizationSettings />
+            </TabPanel>
+
+            <TabPanel value={tabValue} index={2}>
+                <DataManagement />
+            </TabPanel>
+        </Box>
     )
 }

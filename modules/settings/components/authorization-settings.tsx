@@ -38,7 +38,7 @@ export function AuthorizationSettings() {
     return (
         <Stack spacing={3}>
             <Box>
-                <Typography variant='h6' gutterBottom>
+                <Typography variant='h6' sx={{ pt: 0 }}>
                     GitHub 授权
                 </Typography>
                 <Typography variant='body2' color='text.secondary' paragraph>
