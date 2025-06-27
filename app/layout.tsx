@@ -52,7 +52,7 @@ const NAVIGATION: Navigation = [
     },
     {
         segment: 'bilibili',
-        title: 'BiliBili',
+        title: '哔哩哔哩',
         icon: <PlayCircleIcon />,
     },
     {
