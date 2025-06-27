@@ -8,6 +8,5 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({ error: 'Missing bvid' }, { status: 400 })
     }
     const result = await getVideoInfo(bvid)
-    console.log("getVideoInfo", result)
     return NextResponse.json(result)
 }

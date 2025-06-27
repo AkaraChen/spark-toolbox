@@ -9,6 +9,5 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({ error: 'Missing bvid or cid' }, { status: 400 })
     }
     const result = await getVideoSourceUrl(bvid, Number(cid))
-    console.log("getVideoSourceUrl", result)
     return NextResponse.json(result)
 }
