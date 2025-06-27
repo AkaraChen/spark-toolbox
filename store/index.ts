@@ -1,40 +1,33 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
+import { devtools } from 'zustand/middleware'
+import { AppState } from './types'
+import { createAISettingsSlice, AISettingsSlice } from './slices/ai-settings'
 
-export interface Settings {
-}
-
-interface AppState {
-  settings: Settings
-  updateSettings: (settings: Partial<Settings>) => void
-  resetSettings: () => void
-}
-
-const DEFAULT_SETTINGS: Settings = {}
-
+// Create store with slices
 export const useAppStore = create<AppState>()(
-  persist(
-    (set) => ({
-      settings: DEFAULT_SETTINGS,
-      
-      updateSettings: (newSettings) => 
-        set((state) => ({
-          settings: {
-            ...state.settings,
-            ...newSettings
-          }
-        })),
-      
-      resetSettings: () => 
-        set(() => ({
-          settings: DEFAULT_SETTINGS
-        }))
-    }),
-    {
-      name: 'spark-settings',
-      storage: createJSONStorage(() => localStorage),
-    }
+  devtools(
+    persist(
+      (...a) => ({
+        // Combine slices
+        ...createAISettingsSlice(...a),
+        
+        // Global actions
+        resetAllSettings: () => 
+          a[0]((state) => ({
+            // Reset all slices
+            ai: {}
+          }))
+      }),
+      {
+        name: 'spark-store',
+        storage: createJSONStorage(() => localStorage),
+      }
+    )
   )
 )
+
+// Export type for convenience
+export type { AISettingsSlice }
 
 export default useAppStore

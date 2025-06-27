@@ -7,9 +7,21 @@ import Stack from '@mui/material/Stack'
 import Alert from '@mui/material/Alert'
 import Divider from '@mui/material/Divider'
 import { useAppStore } from '@/store'
+import { useNotification } from '@/modules/universal/notification-provider'
 
 export function SystemSettings() {
-    const { resetSettings } = useAppStore()
+    const { resetAllSettings, resetAISettings } = useAppStore()
+    const { showNotification } = useNotification()
+    
+    const handleResetAllSettings = () => {
+        resetAllSettings()
+        showNotification('所有设置已重置', 'warning')
+    }
+    
+    const handleResetAISettings = () => {
+        resetAISettings()
+        showNotification('AI 设置已重置', 'info')
+    }
     
     return (
         <Paper sx={{ p: 3 }}>
@@ -19,13 +31,20 @@ export function SystemSettings() {
             <Divider sx={{ mb: 2 }} />
             <Stack spacing={2}>
                 <Alert severity='info'>
-                    系统设置将在此处显示。您可以在后续添加所需的设置项。
+                    系统设置将在此处显示。请根据需要添加所需的设置项。
                 </Alert>
-                <Box sx={{ mt: 1 }}>
+                <Box sx={{ mt: 1, display: 'flex', justifyContent: 'space-between' }}>
+                    <Button 
+                        variant='outlined'
+                        onClick={handleResetAISettings}
+                    >
+                        重置 AI 设置
+                    </Button>
+                    
                     <Button 
                         variant='outlined' 
                         color='error'
-                        onClick={resetSettings}
+                        onClick={handleResetAllSettings}
                     >
                         重置所有设置
                     </Button>
