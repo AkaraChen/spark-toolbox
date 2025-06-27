@@ -1,1 +1,1 @@
-export const STORE_PATH = 'STORE'
+export const STORE_PATH = 'SPARK_STORE'
