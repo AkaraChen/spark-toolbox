@@ -20,13 +20,18 @@ export function RealTimeClock() {
     }, [])
 
     return (
-        <Card sx={{ height: '100%' }}>
+        <Card>
             <CardContent sx={{ textAlign: 'center' }}>
-                <Typography variant="h4" component="div">
+                <Typography variant='h4' component='div'>
                     {time.toLocaleTimeString('en-US', { hour12: false })}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
-                    {time.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                <Typography variant='body2' color='text.secondary'>
+                    {time.toLocaleDateString('en-US', {
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                    })}
                 </Typography>
             </CardContent>
         </Card>

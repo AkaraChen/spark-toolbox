@@ -21,7 +21,7 @@ function TabPanel(props: TabPanelProps) {
 
     return (
         <div
-            role="tabpanel"
+            role='tabpanel'
             hidden={value !== index}
             id={`settings-tabpanel-${index}`}
             aria-labelledby={`settings-tab-${index}`}
@@ -42,10 +42,14 @@ export default function SettingsPage() {
     return (
         <Paper sx={{ m: 3, flexGrow: 1 }}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                <Tabs value={value} onChange={handleChange} aria-label="settings tabs">
-                    <Tab label="AI" id="settings-tab-0" />
-                    <Tab label="Authorization" id="settings-tab-1" />
-                    <Tab label="Data Management" id="settings-tab-2" />
+                <Tabs
+                    value={value}
+                    onChange={handleChange}
+                    aria-label='settings tabs'
+                >
+                    <Tab label='AI' id='settings-tab-0' />
+                    <Tab label='Authorization' id='settings-tab-1' />
+                    <Tab label='Data Management' id='settings-tab-2' />
                 </Tabs>
             </Box>
             <TabPanel value={value} index={0}>
@@ -60,8 +64,6 @@ export default function SettingsPage() {
         </Paper>
     )
 }
-
-
 
 export default function SettingsPage() {
     const [tabValue, setTabValue] = useState(0)

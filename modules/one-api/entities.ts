@@ -59,7 +59,7 @@ export const oneApiProviderEntity: Entity<OneApiProvider> = {
                 headerName: 'Quota',
                 renderCell: QuotaColumn,
                 display: 'flex',
-                editable: false
+                editable: false,
             },
         ],
         ...crud,

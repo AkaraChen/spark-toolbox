@@ -18,41 +18,31 @@ export function BingImageCard() {
     })
 
     if (isLoading) {
-        return <Skeleton variant="rectangular" width="100%" height={240} />
+        return <Skeleton variant='rectangular' height={240} />
     }
 
     if (error) {
         return (
             <Card>
                 <CardContent>
-                    <Typography color="error">Failed to load Bing image.</Typography>
+                    <Typography color='error'>
+                        Failed to load Bing image.
+                    </Typography>
                 </CardContent>
             </Card>
         )
     }
 
     return (
-        <Card sx={{ position: 'relative', height: '100%' }}>
+        <Card>
             <CardMedia
-                component="img"
+                component='img'
                 image={data!.url}
                 alt={data!.copyright}
                 sx={{ height: 240, objectFit: 'cover' }}
             />
-            <CardContent
-                sx={{
-                    position: 'absolute',
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                    color: 'white',
-                    p: 1,
-                }}
-            >
-                <Typography variant="caption">
-                    {data!.copyright}
-                </Typography>
+            <CardContent>
+                <Typography variant='caption'>{data!.copyright}</Typography>
             </CardContent>
         </Card>
     )
