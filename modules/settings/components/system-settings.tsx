@@ -12,17 +12,17 @@ import { useNotification } from '@/modules/universal/components/notification-pro
 export function SystemSettings() {
     const { resetAllSettings, resetAISettings } = useAppStore()
     const { showNotification } = useNotification()
-    
+
     const handleResetAllSettings = () => {
         resetAllSettings()
         showNotification('所有设置已重置', 'warning')
     }
-    
+
     const handleResetAISettings = () => {
         resetAISettings()
         showNotification('AI 设置已重置', 'info')
     }
-    
+
     return (
         <Paper sx={{ p: 3 }}>
             <Typography variant='h6' gutterBottom>
@@ -33,16 +33,19 @@ export function SystemSettings() {
                 <Alert severity='info'>
                     系统设置将在此处显示。请根据需要添加所需的设置项。
                 </Alert>
-                <Box sx={{ mt: 1, display: 'flex', justifyContent: 'space-between' }}>
-                    <Button 
-                        variant='outlined'
-                        onClick={handleResetAISettings}
-                    >
+                <Box
+                    sx={{
+                        mt: 1,
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                    }}
+                >
+                    <Button variant='outlined' onClick={handleResetAISettings}>
                         重置 AI 设置
                     </Button>
-                    
-                    <Button 
-                        variant='outlined' 
+
+                    <Button
+                        variant='outlined'
                         color='error'
                         onClick={handleResetAllSettings}
                     >

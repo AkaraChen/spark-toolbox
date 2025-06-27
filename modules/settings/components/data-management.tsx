@@ -24,7 +24,10 @@ export function DataManagement() {
             setBackupData(backupJson)
             showNotification('备份数据已生成', 'success')
         } catch (error) {
-            showNotification(`备份失败: ${error instanceof Error ? error.message : '未知错误'}`, 'error')
+            showNotification(
+                `备份失败: ${error instanceof Error ? error.message : '未知错误'}`,
+                'error',
+            )
         }
     }
 
@@ -48,7 +51,7 @@ export function DataManagement() {
         if (!file) return
 
         const reader = new FileReader()
-        reader.onload = (e) => {
+        reader.onload = e => {
             const content = e.target?.result as string
             setRestoreData(content)
         }
@@ -62,7 +65,10 @@ export function DataManagement() {
             GLOBAL_STORE.restore(restoreData)
             showNotification('数据已成功恢复', 'success')
         } catch (error) {
-            showNotification(`恢复失败: ${error instanceof Error ? error.message : '无效的备份数据'}`, 'error')
+            showNotification(
+                `恢复失败: ${error instanceof Error ? error.message : '无效的备份数据'}`,
+                'error',
+            )
         }
     }
 
@@ -105,7 +111,7 @@ export function DataManagement() {
                     )}
                 </Stack>
             </Paper>
-            
+
             <Paper sx={{ p: 3 }}>
                 <Typography variant='h6' gutterBottom>
                     数据恢复

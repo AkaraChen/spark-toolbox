@@ -10,15 +10,22 @@ interface NotificationState {
 }
 
 interface NotificationContextType {
-    showNotification: (message: string, severity: 'success' | 'info' | 'warning' | 'error') => void
+    showNotification: (
+        message: string,
+        severity: 'success' | 'info' | 'warning' | 'error',
+    ) => void
 }
 
-const NotificationContext = createContext<NotificationContextType | undefined>(undefined)
+const NotificationContext = createContext<NotificationContextType | undefined>(
+    undefined,
+)
 
 export function useNotification() {
     const context = useContext(NotificationContext)
     if (!context) {
-        throw new Error('useNotification must be used within a NotificationProvider')
+        throw new Error(
+            'useNotification must be used within a NotificationProvider',
+        )
     }
     return context
 }
@@ -31,18 +38,21 @@ export function NotificationProvider({ children }: NotificationProviderProps) {
     const [notification, setNotification] = useState<NotificationState>({
         open: false,
         message: '',
-        severity: 'info'
+        severity: 'info',
     })
 
     const handleCloseNotification = () => {
         setNotification(prev => ({ ...prev, open: false }))
     }
 
-    const showNotification = (message: string, severity: 'success' | 'info' | 'warning' | 'error') => {
+    const showNotification = (
+        message: string,
+        severity: 'success' | 'info' | 'warning' | 'error',
+    ) => {
         setNotification({
             open: true,
             message,
-            severity
+            severity,
         })
     }
 

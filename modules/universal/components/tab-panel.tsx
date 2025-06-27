@@ -12,7 +12,7 @@ export function TabPanel(props: TabPanelProps) {
 
     return (
         <Box
-            role="tabpanel"
+            role='tabpanel'
             hidden={value !== index}
             id={`settings-tabpanel-${index}`}
             aria-labelledby={`settings-tab-${index}`}
@@ -21,11 +21,4 @@ export function TabPanel(props: TabPanelProps) {
             {value === index && children}
         </Box>
     )
-}
-
-export function a11yProps(index: number) {
-    return {
-        id: `settings-tab-${index}`,
-        'aria-controls': `settings-tabpanel-${index}`,
-    }
 }
