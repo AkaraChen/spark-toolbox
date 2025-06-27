@@ -1,7 +1,7 @@
 import { DataField } from '@toolpad/core'
 import { OneApiProvider } from '../entities'
 import { useQuery } from '@tanstack/react-query'
-import { getProviderQuota } from '../api-client'
+import { getProviderQuota } from '../api/client'
 import { CircularProgress } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
 

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getProviderQuota } from '@/modules/one-api/api'
+import { getProviderQuota } from '@/modules/one-api/api/server'
 import { z } from 'zod'
 
 export interface Quota {

@@ -3,7 +3,8 @@ import { LocalStorageStore } from '@/modules/universal/utils/local-storage'
 import { DataModel, DataSourceCache } from '@toolpad/core'
 import { z } from 'zod'
 import { createCrud } from '@/modules/universal/utils/crud'
-import { QuotaColumn, URLColumn } from './components'
+import { QuotaColumn } from './components/quota-column'
+import { URLColumn } from './components/url-column'
 
 export interface OneApiProvider extends DataModel {
     id: string

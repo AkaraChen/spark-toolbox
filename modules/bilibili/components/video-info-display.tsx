@@ -1,8 +1,8 @@
 'use client'
 
 import { Box, Button, Typography } from '@mui/material'
-import { VideoInfo } from '../types'
-import { downloadViaProxy } from '../../universal/api-client'
+import { VideoInfo } from '../api/types'
+import { downloadViaProxy } from '../../universal/api/client'
 
 interface VideoInfoDisplayProps {
     videoInfo: VideoInfo

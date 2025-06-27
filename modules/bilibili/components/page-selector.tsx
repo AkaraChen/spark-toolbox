@@ -7,7 +7,7 @@ import {
     Select,
     SelectChangeEvent,
 } from '@mui/material'
-import { VideoInfo } from '../types'
+import { VideoInfo } from '../api/types'
 
 interface PageSelectorProps {
     videoInfo: VideoInfo

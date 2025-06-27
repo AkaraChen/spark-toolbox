@@ -1,4 +1,4 @@
-import { getVideoInfo } from '@/modules/bilibili/api'
+import { getVideoInfo } from '@/modules/bilibili/api/server'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(request: NextRequest) {

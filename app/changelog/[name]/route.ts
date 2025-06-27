@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getChangelogInfo } from '@/modules/changelog/api'
-import { ChangelogResult } from '@/modules/changelog/types'
+import { getChangelogInfo } from '@/modules/changelog/api/server'
+import { ChangelogResult } from '@/modules/changelog/api/types'
 import { z } from 'zod'
 
 export async function POST(
