@@ -33,8 +33,6 @@ export function CurrencyExchangeCard() {
         staleTime: 1000 * 60 * 60, // 1 hour
     })
 
-    const [focusedField, setFocusedField] = useState<CurrencyCode | null>(null)
-
     const [values, setValues] = useState<Record<CurrencyCode, number>>({
         CNY: 100,
         USD: 0,
@@ -119,13 +117,7 @@ export function CurrencyExchangeCard() {
                             <TextField
                                 fullWidth
                                 type='number'
-                                value={
-                                    focusedField === code
-                                        ? values[code]
-                                        : parseFloat(values[code].toFixed(2))
-                                }
-                                onFocus={() => setFocusedField(code)}
-                                onBlur={() => setFocusedField(null)}
+                                value={values[code]}
                                 onChange={e =>
                                     handleValueChange(code, e.target.value)
                                 }
