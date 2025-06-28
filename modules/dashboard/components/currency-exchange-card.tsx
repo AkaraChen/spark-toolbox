@@ -28,26 +28,23 @@ export function CurrencyExchangeCard() {
         staleTime: 1000 * 60 * 60, // 1 hour
     })
 
-    const [values, setValues] = useState<Record<CurrencyCode, string>>({
-        CNY: '100.00',
-        USD: '',
-        HKD: '',
-        EUR: '',
-        JPY: '',
+    const [values, setValues] = useState<Record<CurrencyCode, number>>({
+        CNY: 100,
+        USD: 0,
+        HKD: 0,
+        EUR: 0,
+        JPY: 0,
     })
 
     useEffect(() => {
         if (rates) {
-            const cnyValue = parseFloat(values.CNY)
-            if (!isNaN(cnyValue)) {
-                setValues(prev => ({
-                    ...prev,
-                    USD: (cnyValue * rates.cny.usd).toFixed(2),
-                    HKD: (cnyValue * rates.cny.hkd).toFixed(2),
-                    EUR: (cnyValue * rates.cny.eur).toFixed(2),
-                    JPY: (cnyValue * rates.cny.jpy).toFixed(2),
-                }))
-            }
+            setValues(prev => ({
+                ...prev,
+                USD: (prev.CNY * rates.cny.usd),
+                HKD: (prev.CNY * rates.cny.hkd),
+                EUR: (prev.CNY * rates.cny.eur),
+                JPY: (prev.CNY * rates.cny.jpy),
+            }))
         }
     }, [rates, values.CNY])
 
@@ -56,7 +53,7 @@ export function CurrencyExchangeCard() {
 
         const numericValue = parseFloat(value)
         if (isNaN(numericValue)) {
-            setValues(prev => ({ ...prev, [code]: '' }))
+            setValues(prev => ({ ...prev, [code]: 0 }))
             return
         }
 
@@ -69,11 +66,11 @@ export function CurrencyExchangeCard() {
         }
 
         setValues({
-            CNY: baseCnyValue.toFixed(2),
-            USD: (baseCnyValue * rates.cny.usd).toFixed(2),
-            HKD: (baseCnyValue * rates.cny.hkd).toFixed(2),
-            EUR: (baseCnyValue * rates.cny.eur).toFixed(2),
-            JPY: (baseCnyValue * rates.cny.jpy).toFixed(2),
+            CNY: baseCnyValue,
+            USD: (baseCnyValue * rates.cny.usd),
+            HKD: (baseCnyValue * rates.cny.hkd),
+            EUR: (baseCnyValue * rates.cny.eur),
+            JPY: (baseCnyValue * rates.cny.jpy),
         })
     }
 
