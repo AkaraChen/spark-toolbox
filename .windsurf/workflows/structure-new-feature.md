@@ -30,21 +30,21 @@ Create the main component for your feature. While you can create multiple compon
 
 ```tsx
 // modules/<feature-name>/index.tsx
-'use client';
+'use client'
 
-import React from 'react';
-import { Box, Typography } from '@mui/material';
+import React from 'react'
+import { Box, Typography } from '@mui/material'
 
 const FeatureComponent = () => {
-  return (
-    <Box>
-      <Typography variant="h4">Welcome to the New Feature!</Typography>
-      {/* Your feature's UI and logic go here */}
-    </Box>
-  );
-};
+    return (
+        <Box>
+            <Typography variant='h4'>Welcome to the New Feature!</Typography>
+            {/* Your feature's UI and logic go here */}
+        </Box>
+    )
+}
 
-export default FeatureComponent;
+export default FeatureComponent
 ```
 
 ## Step 3: Implement API Logic (If Required)
@@ -71,10 +71,10 @@ To make your feature accessible, create a corresponding route in the `app` direc
 
     ```tsx
     // app/<feature-name>/page.tsx
-    import FeatureComponent from '@/modules/<feature-name>';
+    import FeatureComponent from '@/modules/<feature-name>'
 
     export default function FeaturePage() {
-      return <FeatureComponent />;
+        return <FeatureComponent />
     }
     ```
 
@@ -82,10 +82,10 @@ To make your feature accessible, create a corresponding route in the `app` direc
 
 For any code that can be shared across multiple features, use the `universal` module:
 
--   **Global State:** Use the Zustand store from `modules/universal/store`.
--   **Shared Hooks:** Add to and use hooks from `modules/universal/hooks`.
--   **Shared Utilities:** Use helpers from `modules/universal/utils`.
--   **Global Constants:** Define and use constants from `modules/universal/constants`.
+- **Global State:** Use the Zustand store from `modules/universal/store`.
+- **Shared Hooks:** Add to and use hooks from `modules/universal/hooks`.
+- **Shared Utilities:** Use helpers from `modules/universal/utils`.
+- **Global Constants:** Define and use constants from `modules/universal/constants`.
 
 ## Step 6: Add Navigation
 

@@ -33,13 +33,7 @@ export function CurrencyExchangeCard() {
         staleTime: 1000 * 60 * 60, // 1 hour
     })
 
-    const [base, setBase] = useState<{ code: CurrencyCode; amount: number }>({
-        code: 'CNY',
-        amount: 100,
-    })
-    const [displayValues, setDisplayValues] = useState<
-        Record<CurrencyCode, string>
-    >({
+    const [values, setValues] = useState<Record<CurrencyCode, string>>({
         CNY: '100',
         USD: '',
         HKD: '',
@@ -47,56 +41,53 @@ export function CurrencyExchangeCard() {
         JPY: '',
     })
 
+    const handleValueChange = React.useCallback(
+        (code: CurrencyCode, value: string) => {
+            if (!rates) {
+                setValues(prev => ({ ...prev, [code]: value }))
+                return
+            }
+
+            const numericValue = parseFloat(value)
+            if (isNaN(numericValue)) {
+                // Allow user to type non-numeric values, but don't calculate.
+                setValues(prev => ({ ...prev, [code]: value }))
+                return
+            }
+
+            let baseCnyValue: number
+            if (code === 'CNY') {
+                baseCnyValue = numericValue
+            } else {
+                const rate =
+                    rates.cny[code.toLowerCase() as keyof typeof rates.cny]
+                baseCnyValue = numericValue / rate
+            }
+
+            setValues({
+                CNY: String(parseFloat(baseCnyValue.toFixed(2))),
+                USD: String(
+                    parseFloat((baseCnyValue * rates.cny.usd).toFixed(2)),
+                ),
+                HKD: String(
+                    parseFloat((baseCnyValue * rates.cny.hkd).toFixed(2)),
+                ),
+                EUR: String(
+                    parseFloat((baseCnyValue * rates.cny.eur).toFixed(2)),
+                ),
+                JPY: String(
+                    parseFloat((baseCnyValue * rates.cny.jpy).toFixed(2)),
+                ),
+            })
+        },
+        [rates],
+    )
+
     useEffect(() => {
-        if (!rates) return
-
-        let baseCnyAmount: number
-        if (base.code === 'CNY') {
-            baseCnyAmount = base.amount
-        } else {
-            const rate =
-                rates.cny[base.code.toLowerCase() as keyof typeof rates.cny]
-            baseCnyAmount = base.amount / rate
+        if (rates) {
+            handleValueChange('CNY', '100')
         }
-
-        const newDisplayValues: Record<CurrencyCode, string> = {
-            CNY: baseCnyAmount.toFixed(2),
-            USD: (baseCnyAmount * rates.cny.usd).toFixed(2),
-            HKD: (baseCnyAmount * rates.cny.hkd).toFixed(2),
-            EUR: (baseCnyAmount * rates.cny.eur).toFixed(2),
-            JPY: (baseCnyAmount * rates.cny.jpy).toFixed(2),
-        }
-
-        setDisplayValues(newDisplayValues)
-    }, [rates, base])
-
-    const handleInputChange = (code: CurrencyCode, value: string) => {
-        setDisplayValues(prev => ({
-            ...prev,
-            [code]: value,
-        }))
-    }
-
-    const handleCommit = (code: CurrencyCode) => {
-        const amount = parseFloat(displayValues[code])
-        if (!isNaN(amount)) {
-            setBase({ code, amount })
-        } else {
-            // Revert to the last valid state by re-triggering the effect
-            setBase(prev => ({ ...prev }))
-        }
-    }
-
-    const handleKeyDown = (
-        event: React.KeyboardEvent,
-        code: CurrencyCode,
-    ) => {
-        if (event.key === 'Enter') {
-            handleCommit(code)
-            const input = event.target as HTMLInputElement
-            input.blur()
-        }
-    }
+    }, [rates, handleValueChange])
 
     if (isLoading) {
         return <Skeleton variant='rectangular' height={280} />
@@ -136,12 +127,10 @@ export function CurrencyExchangeCard() {
                             <TextField
                                 fullWidth
                                 type='number'
-                                value={displayValues[code] || ''}
+                                value={values[code]}
                                 onChange={e =>
-                                    handleInputChange(code, e.target.value)
+                                    handleValueChange(code, e.target.value)
                                 }
-                                onBlur={() => handleCommit(code)}
-                                onKeyDown={e => handleKeyDown(e, code)}
                                 sx={{ mr: 1.5 }}
                                 size='small'
                             />
