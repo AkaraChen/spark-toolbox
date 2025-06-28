@@ -23,10 +23,10 @@ export function RealTimeClock() {
                 <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
                     <Clock value={time} size={150} />
                 </Box>
-                <Typography variant="h4" component="div">
+                <Typography variant='h4' component='div'>
                     {time.toLocaleTimeString('en-US', { hour12: false })}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant='body2' color='text.secondary'>
                     {time.toLocaleDateString('en-US', {
                         weekday: 'long',
                         year: 'numeric',

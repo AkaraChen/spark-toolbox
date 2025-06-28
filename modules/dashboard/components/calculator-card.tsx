@@ -47,20 +47,32 @@ export function CalculatorCard() {
     return (
         <Card>
             <CardContent>
-                <Typography variant="h6" gutterBottom>
+                <Typography variant='h6' gutterBottom>
                     Calculator
                 </Typography>
                 <TextField
                     fullWidth
-                    variant="outlined"
-                    label="Enter expression"
+                    variant='outlined'
+                    label='Enter expression'
                     value={expression}
                     onChange={handleChange}
                     error={!!errorMessage}
                     helperText={errorMessage}
                 />
-                <Box sx={{ mt: 2, p: 2, backgroundColor: 'grey.100', borderRadius: 1, minHeight: '50px' }}>
-                    <Typography variant="h5" component="div" sx={{ wordWrap: 'break-word' }}>
+                <Box
+                    sx={{
+                        mt: 2,
+                        p: 2,
+                        backgroundColor: 'grey.100',
+                        borderRadius: 1,
+                        minHeight: '50px',
+                    }}
+                >
+                    <Typography
+                        variant='h5'
+                        component='div'
+                        sx={{ wordWrap: 'break-word' }}
+                    >
                         {result}
                     </Typography>
                 </Box>

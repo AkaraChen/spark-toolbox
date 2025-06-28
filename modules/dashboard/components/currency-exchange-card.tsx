@@ -10,8 +10,9 @@ import TextField from '@mui/material/TextField'
 import Box from '@mui/material/Box'
 import Skeleton from '@mui/material/Skeleton'
 import { getCurrencyRates } from '../api/client'
+import { CircularProgress } from '@mui/material'
 
-const currencies = [
+const currencies: Array<{ code: CurrencyCode; name: string; flag: string }> = [
     { code: 'CNY', name: 'Chinese Yuan', flag: '🇨🇳' },
     { code: 'USD', name: 'US Dollar', flag: '🇺🇸' },
     { code: 'HKD', name: 'Hong Kong Dollar', flag: '🇭🇰' },
@@ -19,14 +20,20 @@ const currencies = [
     { code: 'JPY', name: 'Japanese Yen', flag: '🇯🇵' },
 ]
 
-type CurrencyCode = 'CNY' | 'USD' | 'HKD' | 'EUR' | 'JPY';
+type CurrencyCode = 'CNY' | 'USD' | 'HKD' | 'EUR' | 'JPY'
 
 export function CurrencyExchangeCard() {
-    const { data: rates, isLoading, error } = useQuery({
+    const {
+        data: rates,
+        isLoading,
+        error,
+    } = useQuery({
         queryKey: ['currencyRates'],
         queryFn: getCurrencyRates,
         staleTime: 1000 * 60 * 60, // 1 hour
     })
+
+    const [focusedField, setFocusedField] = useState<CurrencyCode | null>(null)
 
     const [values, setValues] = useState<Record<CurrencyCode, number>>({
         CNY: 100,
@@ -40,10 +47,10 @@ export function CurrencyExchangeCard() {
         if (rates) {
             setValues(prev => ({
                 ...prev,
-                USD: (prev.CNY * rates.cny.usd),
-                HKD: (prev.CNY * rates.cny.hkd),
-                EUR: (prev.CNY * rates.cny.eur),
-                JPY: (prev.CNY * rates.cny.jpy),
+                USD: prev.CNY * rates.cny.usd,
+                HKD: prev.CNY * rates.cny.hkd,
+                EUR: prev.CNY * rates.cny.eur,
+                JPY: prev.CNY * rates.cny.jpy,
             }))
         }
     }, [rates, values.CNY])
@@ -57,7 +64,7 @@ export function CurrencyExchangeCard() {
             return
         }
 
-        let baseCnyValue: number;
+        let baseCnyValue: number
         if (code === 'CNY') {
             baseCnyValue = numericValue
         } else {
@@ -67,22 +74,24 @@ export function CurrencyExchangeCard() {
 
         setValues({
             CNY: baseCnyValue,
-            USD: (baseCnyValue * rates.cny.usd),
-            HKD: (baseCnyValue * rates.cny.hkd),
-            EUR: (baseCnyValue * rates.cny.eur),
-            JPY: (baseCnyValue * rates.cny.jpy),
+            USD: baseCnyValue * rates.cny.usd,
+            HKD: baseCnyValue * rates.cny.hkd,
+            EUR: baseCnyValue * rates.cny.eur,
+            JPY: baseCnyValue * rates.cny.jpy,
         })
     }
 
     if (isLoading) {
-        return <Skeleton variant="rectangular" height={280} />
+        return <Skeleton variant='rectangular' height={280} />
     }
 
     if (error) {
         return (
             <Card>
                 <CardContent>
-                    <Typography color="error">Failed to load currency rates.</Typography>
+                    <Typography color='error'>
+                        Failed to load currency rates.
+                    </Typography>
                 </CardContent>
             </Card>
         )
@@ -91,29 +100,54 @@ export function CurrencyExchangeCard() {
     return (
         <Card>
             <CardContent>
-                <Typography variant="h6" gutterBottom>
+                <Typography variant='h6' gutterBottom>
                     Currency Exchange
                 </Typography>
-                <Box component="form" noValidate autoComplete="off">
+                <Box component='form' noValidate autoComplete='off'>
                     {currencies.map(({ code, flag }) => (
-                        <Box key={code} sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                            <Typography sx={{ fontSize: '1.5rem', mr: 1.5 }}>{flag}</Typography>
+                        <Box
+                            key={code}
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                mb: 2,
+                            }}
+                        >
+                            <Typography sx={{ fontSize: '1.5rem', mr: 1.5 }}>
+                                {flag}
+                            </Typography>
                             <TextField
                                 fullWidth
-                                type="number"
-                                value={values[code as CurrencyCode]}
-                                onChange={(e) => handleValueChange(code as CurrencyCode, e.target.value)}
+                                type='number'
+                                value={
+                                    focusedField === code
+                                        ? values[code]
+                                        : parseFloat(values[code].toFixed(2))
+                                }
+                                onFocus={() => setFocusedField(code)}
+                                onBlur={() => setFocusedField(null)}
+                                onChange={e =>
+                                    handleValueChange(code, e.target.value)
+                                }
                                 sx={{ mr: 1.5 }}
-                                size="small"
+                                size='small'
                             />
-                            <Typography variant="body1" sx={{ fontFamily: 'monospace' }}>
+                            <Typography
+                                variant='body1'
+                                sx={{ fontFamily: 'monospace' }}
+                            >
                                 {code}
                             </Typography>
                         </Box>
                     ))}
                 </Box>
-                <Typography variant="caption" color="text.secondary">
-                    Last updated: {rates && new Date(rates.date).toLocaleDateString()}
+                <Typography variant='caption' color='text.secondary'>
+                    Last updated:{' '}
+                    {rates ? (
+                        new Date(rates.date).toLocaleDateString()
+                    ) : (
+                        <CircularProgress size={16} />
+                    )}
                 </Typography>
             </CardContent>
         </Card>
