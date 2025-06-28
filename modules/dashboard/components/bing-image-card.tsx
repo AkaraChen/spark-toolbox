@@ -59,10 +59,9 @@ export function BingImageCard() {
                         right: 0,
                         backgroundColor: 'rgba(0, 0, 0, 0.5)',
                         color: 'white',
-                        p: 1,
                     }}
                 >
-                    <Typography variant="caption">
+                    <Typography variant="body2">
                         <Link href={data.copyright_link} target="_blank" rel="noopener" color="inherit">
                             {data.copyright}
                         </Link>
