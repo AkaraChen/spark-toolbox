@@ -29,7 +29,7 @@ export function CurrencyExchangeCard() {
     })
 
     const [values, setValues] = useState<Record<CurrencyCode, string>>({
-        CNY: '100.00',
+        CNY: '100',
         USD: '',
         HKD: '',
         EUR: '',
@@ -107,6 +107,7 @@ export function CurrencyExchangeCard() {
                                 value={values[code as CurrencyCode]}
                                 onChange={(e) => handleValueChange(code as CurrencyCode, e.target.value)}
                                 sx={{ mr: 1.5 }}
+                                size="small"
                             />
                             <Typography variant="body1" sx={{ fontFamily: 'monospace' }}>
                                 {code}
