@@ -33,50 +33,69 @@ export function CurrencyExchangeCard() {
         staleTime: 1000 * 60 * 60, // 1 hour
     })
 
-    const [values, setValues] = useState<Record<CurrencyCode, number>>({
-        CNY: 100,
-        USD: 0,
-        HKD: 0,
-        EUR: 0,
-        JPY: 0,
+    const [base, setBase] = useState<{ code: CurrencyCode; amount: number }>({
+        code: 'CNY',
+        amount: 100,
+    })
+    const [displayValues, setDisplayValues] = useState<
+        Record<CurrencyCode, string>
+    >({
+        CNY: '100',
+        USD: '',
+        HKD: '',
+        EUR: '',
+        JPY: '',
     })
 
     useEffect(() => {
-        if (rates) {
-            setValues(prev => ({
-                ...prev,
-                USD: prev.CNY * rates.cny.usd,
-                HKD: prev.CNY * rates.cny.hkd,
-                EUR: prev.CNY * rates.cny.eur,
-                JPY: prev.CNY * rates.cny.jpy,
-            }))
-        }
-    }, [rates, values.CNY])
-
-    const handleValueChange = (code: CurrencyCode, value: string) => {
         if (!rates) return
 
-        const numericValue = parseFloat(value)
-        if (isNaN(numericValue)) {
-            setValues(prev => ({ ...prev, [code]: 0 }))
-            return
-        }
-
-        let baseCnyValue: number
-        if (code === 'CNY') {
-            baseCnyValue = numericValue
+        let baseCnyAmount: number
+        if (base.code === 'CNY') {
+            baseCnyAmount = base.amount
         } else {
-            const rate = rates.cny[code.toLowerCase() as keyof typeof rates.cny]
-            baseCnyValue = numericValue / rate
+            const rate =
+                rates.cny[base.code.toLowerCase() as keyof typeof rates.cny]
+            baseCnyAmount = base.amount / rate
         }
 
-        setValues({
-            CNY: baseCnyValue,
-            USD: baseCnyValue * rates.cny.usd,
-            HKD: baseCnyValue * rates.cny.hkd,
-            EUR: baseCnyValue * rates.cny.eur,
-            JPY: baseCnyValue * rates.cny.jpy,
-        })
+        const newDisplayValues: Record<CurrencyCode, string> = {
+            CNY: baseCnyAmount.toFixed(2),
+            USD: (baseCnyAmount * rates.cny.usd).toFixed(2),
+            HKD: (baseCnyAmount * rates.cny.hkd).toFixed(2),
+            EUR: (baseCnyAmount * rates.cny.eur).toFixed(2),
+            JPY: (baseCnyAmount * rates.cny.jpy).toFixed(2),
+        }
+
+        setDisplayValues(newDisplayValues)
+    }, [rates, base])
+
+    const handleInputChange = (code: CurrencyCode, value: string) => {
+        setDisplayValues(prev => ({
+            ...prev,
+            [code]: value,
+        }))
+    }
+
+    const handleCommit = (code: CurrencyCode) => {
+        const amount = parseFloat(displayValues[code])
+        if (!isNaN(amount)) {
+            setBase({ code, amount })
+        } else {
+            // Revert to the last valid state by re-triggering the effect
+            setBase(prev => ({ ...prev }))
+        }
+    }
+
+    const handleKeyDown = (
+        event: React.KeyboardEvent,
+        code: CurrencyCode,
+    ) => {
+        if (event.key === 'Enter') {
+            handleCommit(code)
+            const input = event.target as HTMLInputElement
+            input.blur()
+        }
     }
 
     if (isLoading) {
@@ -117,10 +136,12 @@ export function CurrencyExchangeCard() {
                             <TextField
                                 fullWidth
                                 type='number'
-                                value={values[code]}
+                                value={displayValues[code] || ''}
                                 onChange={e =>
-                                    handleValueChange(code, e.target.value)
+                                    handleInputChange(code, e.target.value)
                                 }
+                                onBlur={() => handleCommit(code)}
+                                onKeyDown={e => handleKeyDown(e, code)}
                                 sx={{ mr: 1.5 }}
                                 size='small'
                             />
