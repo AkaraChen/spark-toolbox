@@ -7,6 +7,7 @@ import CardMedia from '@mui/material/CardMedia'
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 import Skeleton from '@mui/material/Skeleton'
+import Link from '@mui/material/Link'
 import { getBingImage } from '../api/client'
 
 export function BingImageCard() {
@@ -17,33 +18,59 @@ export function BingImageCard() {
         staleTime: 1000 * 60 * 60 * 24, // 24 hours
     })
 
-    if (isLoading) {
-        return <Skeleton variant='rectangular' height={240} />
+    const cardStyles = {
+        width: 360,
+        height: 240,
+        position: 'relative',
     }
 
-    if (error) {
-        return (
-            <Card>
-                <CardContent>
-                    <Typography color='error'>
+    const renderContent = () => {
+        if (isLoading) {
+            return <Skeleton variant="rectangular" width="100%" height="100%" />
+        }
+
+        if (error || !data) {
+            return (
+                <CardContent sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+                    <Typography color="error" align="center">
                         Failed to load Bing image.
                     </Typography>
                 </CardContent>
-            </Card>
+            )
+        }
+
+        return (
+            <>
+                <CardMedia
+                    component="img"
+                    image={data.url}
+                    alt={data.copyright}
+                    sx={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                    }}
+                />
+                <CardContent
+                    sx={{
+                        position: 'absolute',
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                        color: 'white',
+                        p: 1,
+                    }}
+                >
+                    <Typography variant="caption">
+                        <Link href={data.copyright_link} target="_blank" rel="noopener" color="inherit">
+                            {data.copyright}
+                        </Link>
+                    </Typography>
+                </CardContent>
+            </>
         )
     }
 
-    return (
-        <Card>
-            <CardMedia
-                component='img'
-                image={data!.url}
-                alt={data!.copyright}
-                sx={{ height: 240, objectFit: 'cover' }}
-            />
-            <CardContent>
-                <Typography variant='caption'>{data!.copyright}</Typography>
-            </CardContent>
-        </Card>
-    )
+    return <Card sx={cardStyles}>{renderContent()}</Card>
 }

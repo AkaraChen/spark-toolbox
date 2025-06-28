@@ -4,6 +4,7 @@ import { z } from 'zod'
 const BingImageSchema = z.object({
     url: z.string(),
     copyright: z.string(),
+    copyright_link: z.string(),
 })
 
 export async function getBingImage() {
