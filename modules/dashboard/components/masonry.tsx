@@ -3,6 +3,7 @@ import { Masonry } from '@mui/lab'
 import { RealTimeClock } from '@/modules/dashboard/components/real-time-clock'
 import { BingImageCard } from '@/modules/dashboard/components/bing-image-card'
 import { CalculatorCard } from './calculator-card'
+import { CurrencyExchangeCard } from './currency-exchange-card'
 
 export function DashboardMasonry() {
     return (
@@ -10,7 +11,7 @@ export function DashboardMasonry() {
             <RealTimeClock />
             <BingImageCard />
             <CalculatorCard />
-            {/* You can add more cards here in the future */}
+            <CurrencyExchangeCard />
         </Masonry>
     )
 }
