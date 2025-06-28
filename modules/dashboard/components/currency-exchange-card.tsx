@@ -29,7 +29,7 @@ export function CurrencyExchangeCard() {
     })
 
     const [values, setValues] = useState<Record<CurrencyCode, string>>({
-        CNY: '100',
+        CNY: '100.00',
         USD: '',
         HKD: '',
         EUR: '',
@@ -49,7 +49,7 @@ export function CurrencyExchangeCard() {
                 }))
             }
         }
-    }, [rates])
+    }, [rates, values.CNY])
 
     const handleValueChange = (code: CurrencyCode, value: string) => {
         if (!rates) return
