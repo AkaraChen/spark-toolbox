@@ -1,5 +1,14 @@
 # Create Toolpad App
 
+## Development Conventions
+
+### Asynchronous Operations
+
+- All asynchronous operations within components, such as data fetching, should be managed using **TanStack Query** by default.
+- This ensures consistency in state management, caching, and error handling across the application.
+- Deviations from this pattern should only occur for specific, well-justified reasons.
+
+
 ## Project Architecture Overview
 
 This project is a modern web application built with **Next.js** and **TypeScript**, indicating a strong emphasis on type safety and server-side rendering for performance. The UI is crafted using **Material UI (MUI)**, a popular React component library that provides a robust set of pre-built components for a consistent and professional look.
