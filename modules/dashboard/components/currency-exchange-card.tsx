@@ -11,7 +11,7 @@ import Box from '@mui/material/Box'
 import Skeleton from '@mui/material/Skeleton'
 import { getCurrencyRates } from '../api/client'
 import { calculateCurrencyValues, CurrencyCode } from '../utils/currency'
-import { CircularProgress } from '@mui/material'
+import { CircularProgress, Stack } from '@mui/material'
 
 const currencies: Array<{ code: CurrencyCode; name: string; flag: string }> = [
     { code: 'CNY', name: 'Chinese Yuan', flag: '🇨🇳' },
@@ -104,15 +104,14 @@ export function CurrencyExchangeCard() {
                 </Typography>
                 <Box component='form' noValidate autoComplete='off'>
                     {currencies.map(({ code, flag }) => (
-                        <Box
+                        <Stack
+                            direction='row'
+                            alignItems='center'
+                            spacing={2}
                             key={code}
-                            sx={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                mb: 2,
-                            }}
+                            sx={{ mb: 1 }}
                         >
-                            <Typography sx={{ fontSize: '1.5rem', mr: 1.5 }}>
+                            <Typography sx={{ fontSize: '1.5rem' }}>
                                 {flag}
                             </Typography>
                             <TextField
@@ -122,7 +121,6 @@ export function CurrencyExchangeCard() {
                                 onChange={e =>
                                     handleValueChange(code, e.target.value)
                                 }
-                                sx={{ mr: 1.5 }}
                                 size='small'
                             />
                             <Typography
@@ -131,7 +129,7 @@ export function CurrencyExchangeCard() {
                             >
                                 {code}
                             </Typography>
-                        </Box>
+                        </Stack>
                     ))}
                 </Box>
                 <Typography variant='caption' color='text.secondary'>
