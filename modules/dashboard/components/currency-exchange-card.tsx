@@ -10,6 +10,7 @@ import TextField from '@mui/material/TextField'
 import Box from '@mui/material/Box'
 import Skeleton from '@mui/material/Skeleton'
 import { getCurrencyRates } from '../api/client'
+import { calculateCurrencyValues, CurrencyCode } from '../utils/currency'
 import { CircularProgress } from '@mui/material'
 
 const currencies: Array<{ code: CurrencyCode; name: string; flag: string }> = [
@@ -20,7 +21,7 @@ const currencies: Array<{ code: CurrencyCode; name: string; flag: string }> = [
     { code: 'JPY', name: 'Japanese Yen', flag: '🇯🇵' },
 ]
 
-type CurrencyCode = 'CNY' | 'USD' | 'HKD' | 'EUR' | 'JPY'
+
 
 export function CurrencyExchangeCard() {
     const {
@@ -50,35 +51,25 @@ export function CurrencyExchangeCard() {
 
             const numericValue = parseFloat(value)
             if (isNaN(numericValue)) {
-                // Allow user to type non-numeric values, but don't calculate.
                 setValues(prev => ({ ...prev, [code]: value }))
                 return
             }
 
-            let baseCnyValue: number
-            if (code === 'CNY') {
-                baseCnyValue = numericValue
-            } else {
-                const rate =
-                    rates.cny[code.toLowerCase() as keyof typeof rates.cny]
-                baseCnyValue = numericValue / rate
-            }
+            const calculatedValues = calculateCurrencyValues(
+                code,
+                numericValue,
+                rates,
+            )
 
-            setValues({
-                CNY: String(parseFloat(baseCnyValue.toFixed(2))),
-                USD: String(
-                    parseFloat((baseCnyValue * rates.cny.usd).toFixed(2)),
-                ),
-                HKD: String(
-                    parseFloat((baseCnyValue * rates.cny.hkd).toFixed(2)),
-                ),
-                EUR: String(
-                    parseFloat((baseCnyValue * rates.cny.eur).toFixed(2)),
-                ),
-                JPY: String(
-                    parseFloat((baseCnyValue * rates.cny.jpy).toFixed(2)),
-                ),
-            })
+            const newValues = Object.entries(calculatedValues).reduce(
+                (acc, [key, val]) => {
+                    acc[key as CurrencyCode] = String(val)
+                    return acc
+                },
+                {} as Record<CurrencyCode, string>,
+            )
+
+            setValues(newValues)
         },
         [rates],
     )
